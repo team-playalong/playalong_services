@@ -1,0 +1,20 @@
+{
+  "name": "playalong_services",
+  "version": "1.0.0",
+  "description": "services repo - AngularJS project with common services",
+  "main": "services_app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "services"
+  ],
+  "author": "PlayAlong Team",
+  "license": "ISC",
+  "dependencies": {
+    "bower": "^1.4.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-concat": "^0.5.1"
+  }
+}

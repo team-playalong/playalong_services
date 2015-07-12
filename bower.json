@@ -1,0 +1,16 @@
+{
+  "name": "playalong_services",
+  "version": "1.0.0",
+  "authors": [
+    "PlayAlong Team"
+  ],
+  "main": "dist/app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
