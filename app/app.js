@@ -1,2 +1,2 @@
 angular
-    .module('playalong.services', []);
+    .module('playalong.services', ['firebase']);
