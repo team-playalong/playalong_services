@@ -1,7 +1,8 @@
-'use strict';
+
 
 describe('Service: chord', function () {
-
+  'use strict';
+  
   // load the service's module
   beforeEach(module('playalong.services'));
 

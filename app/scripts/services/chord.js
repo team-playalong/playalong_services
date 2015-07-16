@@ -1,4 +1,4 @@
-"use strict";
+
 
 /**
  * @ngdoc service
@@ -10,6 +10,8 @@
 
 angular.module('playalong.services')
   .factory('chord', ['$firebaseObject','config', function ($firebaseObject, config) {
+    'use strict';
+
     var ref = new Firebase(config.paths.firebase + '/test');  
 
   // download the data into a local object
@@ -22,6 +24,7 @@ angular.module('playalong.services')
   }
 
   function addChord(chordObj) {
+    //TODO validate chord object
     testChord.$add(chordObj);
   }
     // Public API here
@@ -29,4 +32,4 @@ angular.module('playalong.services')
       getChordsById: getChordsById,
       addChord: addChord
     };
-  });
+  }]);

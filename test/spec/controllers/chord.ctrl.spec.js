@@ -1,6 +1,6 @@
-'use strict';
 
 describe('Controller: ChordCtrl', function () {
+  'use strict';
 
   // load the controller's module
   beforeEach(module('playalongServicesApp'));

@@ -1,9 +1,9 @@
-'use strict';
+
 
 describe('Service: config', function () {
-
+  'use strict';
   // load the service's module
-  beforeEach(module('playalongServicesApp'));
+  beforeEach(module('playalong.services'));
 
   // instantiate service
   var config;

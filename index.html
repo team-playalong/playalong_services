@@ -4,18 +4,29 @@
     <meta charset="utf-8">
     <title>Test Services</title>
     
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- bower:css -->
+    <!-- endbower -->
+
     <script src="bower_components/angular/angular.min.js"></script>
 	<!-- Firebase -->
 	<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
 	<!-- AngularFire -->
 	<script src="https://cdn.firebase.com/libs/angularfire/1.1.2/angularfire.min.js"></script>
 
+  <!-- bower:js -->
+  <!-- endbower -->
+
 	<script src="app/app.js"></script>
 
 
   </head>
   <body ng-app="playalong.services">
-
-</body>
+    <div class="container">
+       <button class="btn btn-default" ng-click="addChord()">Add Chord</button> 
+    </div>
+    <button class="btn btn-default" ng-click="addChord()">Add Chord</button>
+  </body>
 </html>
 
