@@ -1,22 +1,22 @@
 {
-  "name": "playalong_services",
-  "version": "1.0.0",
-  "authors": [
-    "PlayAlong Team"
-  ],
-  "main": "dist/app.js",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "devDependencies": {
-    "angular-mocks": "~1.4.3"
-  },
+  "name": "git-hub",
+  "version": "0.0.0",
   "dependencies": {
-    "bootstrap": "~3.3.5"
+    "angular": "^1.3.0",
+    "bootstrap": "^3.2.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.3.0"
+  },
+  "appPath": "app",
+  "moduleName": "gitHubApp",
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    }
   }
 }
