@@ -1,3 +1,17 @@
 <div class="container">
+  <button class="btn btn-md" ng-click="addChord()">Add Chord</button>
+
+  <div class="form-group">
+  	<label>Chord id</label>
+  	<div class="form-control">
+  		<input type="number" ng-model="chordId" />
+  	</div>
+  </div>
+  <div class="row">
+  	<button class="btn btn-defaults" ng-click="getChordById()">Search chord by id</button>
+  </div>
   
+  <pre>
+  	{{resultJson | json}}
+  </pre>
 </div>

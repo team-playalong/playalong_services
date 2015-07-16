@@ -9,7 +9,7 @@
     "angular-mocks": "^1.3.0"
   },
   "appPath": "app",
-  "moduleName": "gitHubApp",
+  "moduleName": "playalong.services",
   "overrides": {
     "bootstrap": {
       "main": [

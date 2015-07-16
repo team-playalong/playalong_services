@@ -7,11 +7,20 @@
  * # MainCtrl
  * Controller of the gitHubApp
  */
-angular.module('gitHubApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+angular.module('playalong.services')
+  .controller('MainCtrl',['$scope','config','$http', 'chords',
+  				 function ($scope,config,$http,chords) {
+  	$scope.addChord = function() {
+  		$http.get(config.paths.mocks.singleChord)
+	    .success(function(response) {
+	    	console.log(response);
+	    	chords.addChord(response);
+
+	    });
+  	};
+
+  	$scope.getChordById = function() {
+  		$scope.chordId = 1;
+  		$scope.resultJson = chords.getChordById($scope.chordId);
+  	};
+  }]);
