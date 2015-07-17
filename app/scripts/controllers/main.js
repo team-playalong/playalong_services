@@ -9,9 +9,9 @@
  */
 angular.module('playalong.services')
   .controller('MainCtrl',['$scope','config','$http', 'chords',
-  				 function ($scope,config,$http,chords) {
+ function ($scope,config,$http,chords) {
   	$scope.addChord = function() {
-  		$http.get(config.paths.mocks.singleChord)
+  		$http.get(config.paths.mocks.hebrewChord)
 	    .success(function(response) {
 	    	console.log(response);
 	    	chords.addChord(response);
@@ -28,4 +28,15 @@ angular.module('playalong.services')
         $scope.resultJson = data; 
       });
   	};
+
+    $scope.searchBy = 'artist';
+    $scope.searchChord = function(searchBy, searchText) {
+      chords.searchChordsBy(searchBy,searchText)
+      .then(function(data) {
+        $scope.resultJson = data; 
+      })
+      .catch(function(data) {
+        $scope.resultJson = data; 
+      });
+    };
   }]);

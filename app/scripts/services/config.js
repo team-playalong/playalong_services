@@ -12,7 +12,8 @@ angular.module('playalong.services')
   	paths: {
   		firebase: 'https://playalong.firebaseio.com',
   		mocks: {
-  			singleChord: 'mocks/singleChord.json'
+  			singleChord: 'mocks/singleChord.json',
+  			hebrewChord: 'mocks/hebrewChord.json'
   		}
   	}
   });

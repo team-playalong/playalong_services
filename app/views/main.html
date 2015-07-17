@@ -13,8 +13,24 @@
   <div class="form-group">
   	<button class="btn btn-defaults" ng-click="getChordById()">Search chord by id</button>
   </div>
-  
-  <pre>
-  	{{resultJson | json}}
+
+  <div class="form-group">
+    <label for="searchBy">Search By</label>
+    <select id="searchBy" ng-model="searchBy" id="" class="form-control">
+      <option value="artist" selected>artist</option>
+      <option value="title">title</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="searchText">Text</label>
+    <input class="form-control" type="text" ng-model="searchText" />
+  </div>  
+
+  <button class="form-control btn btn-primary" ng-click="searchChord(searchBy,searchText)" >Search Chord</button>
+  <div class="container">
+    <pre>
+    {{resultJson | json}}
   </pre>
+  </div>
+  
 </div>

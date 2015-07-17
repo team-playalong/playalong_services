@@ -39,9 +39,32 @@ angular.module('playalong.services')
       return deferred.promise;
     }
 
+    function searchChordsBy(searchBy, searchText) {
+      var deferred = $q.defer();
+
+      //TODO - data validation
+      ref.orderByChild(searchBy).startAt(searchText).endAt(searchText+'~').on("value", function(snapshot) {
+        //Extract the object
+        var rawData = snapshot.val();
+
+        if (!rawData) {
+          deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
+        }
+        var result;
+        //Currently Workaround
+        angular.forEach(rawData, function(value, key) {
+          result = value;
+        });
+        deferred.resolve(result);
+      });
+      
+      return deferred.promise;
+    }
+
     // Public API here
     return {
       addChord: addChord,
-      getChordById: getChordById
+      getChordById: getChordById,
+      searchChordsBy: searchChordsBy
     };
   }]);
