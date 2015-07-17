@@ -20,7 +20,12 @@ angular.module('playalong.services')
   	};
 
   	$scope.getChordById = function() {
-  		$scope.chordId = 1;
-  		$scope.resultJson = chords.getChordById($scope.chordId);
+  		chords.getChordById(1)
+      .then(function(data) {
+        $scope.resultJson = data; 
+      })
+      .catch(function(data) {
+        $scope.resultJson = data; 
+      });
   	};
   }]);

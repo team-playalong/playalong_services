@@ -8,7 +8,7 @@
  * Factory in the gitHubApp.
  */
 angular.module('playalong.services')
-  .factory('chords',['config','$firebaseArray', function (config,$firebaseArray) {
+  .factory('chords',['config','$firebaseArray','$q', function (config,$firebaseArray,$q) {
     var ref = new Firebase(config.paths.firebase +'/chords');
     var chordsData = $firebaseArray(ref);
 
@@ -19,10 +19,24 @@ angular.module('playalong.services')
     }
 
     function getChordById(chordId) {
-      var res = ref.child(chordId);
-      console.log(res);
+      var deferred = $q.defer();
 
-      return res;
+      ref.orderByChild("id").equalTo(chordId).on("value", function(snapshot) {
+        //Extract the object
+        var rawData = snapshot.val();
+
+        if (!rawData) {
+          deferred.reject('No Chord with Id ' + chordId);
+        }
+        var result;
+        //Currently Workaround
+        angular.forEach(rawData, function(value, key) {
+          result = value;
+        });
+        deferred.resolve(result);
+      });
+      
+      return deferred.promise;
     }
 
     // Public API here
