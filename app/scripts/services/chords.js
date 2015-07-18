@@ -30,7 +30,7 @@ angular.module('playalong.services')
         }
         var result;
         //Currently Workaround
-        angular.forEach(rawData, function(value, key) {
+        angular.forEach(rawData, function(value) {
           result = value;
         });
         deferred.resolve(result);
@@ -52,7 +52,7 @@ angular.module('playalong.services')
         }
         var result;
         //Currently Workaround
-        angular.forEach(rawData, function(value, key) {
+        angular.forEach(rawData, function(value) {
           result = value;
         });
         deferred.resolve(result);
