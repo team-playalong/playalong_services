@@ -8,14 +8,18 @@
  * Factory in the gitHubApp.
  */
 angular.module('playalong.services')
-  .factory('chords',['config','$firebaseArray','$q', function (config,$firebaseArray,$q) {
+  .factory('chords',['config','$firebaseArray','$q', '$firebaseObject',function (config,$firebaseArray,$q,$firebaseObject) {
     var ref = new Firebase(config.paths.firebase +'/chords');
     var chordsData = $firebaseArray(ref);
 
     function addChord(chordObj) {
       //TODO validate data        
-      chordsData.$add(chordObj);
-      console.log('all good');
+      var request = chordsData.$add(chordObj)
+      .then(function(ref) {
+        return $firebaseObject(ref);
+      });
+
+      return request;
     }
 
     function getChordById(chordId) {
