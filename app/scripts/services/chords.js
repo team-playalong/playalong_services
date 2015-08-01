@@ -54,10 +54,10 @@ angular.module('playalong.services')
         if (!rawData) {
           deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
         }
-        var result;
+        var result = [];
         //Currently Workaround
         angular.forEach(rawData, function(value) {
-          result = value;
+          result.push(value);
         });
         deferred.resolve(result);
       });
