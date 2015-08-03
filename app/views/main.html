@@ -28,7 +28,7 @@
 
   <button class="form-control btn btn-primary" ng-click="searchChord(searchBy,searchText)" >Search Chord</button>
   <div class="container">
-    <pre>
+    <pre ng-click="increaseChordHitCount(resultJson[0])">
     {{resultJson | json}}
   </pre>
   </div>

@@ -12,8 +12,21 @@ angular.module('playalong.services')
     var ref = new Firebase(config.paths.firebase +'/chords');
     var chordsData = $firebaseArray(ref);
 
+    function increaseChordHitCount(chordKey) {
+      console.log(chordKey);
+      var localRef = new Firebase(ref + '/' + chordKey);
+      localRef.orderByChild("hitCount").once("value", function(snapshot) {
+        localRef.child('hitCount').set((snapshot.val().hitCount || 0 )+1);
+      }); 
+
+
+    }
+
     function addChord(chordObj) {
       //TODO validate data        
+      
+      //initialize the hit count
+      chordObj.hitCount = 0;
       var request = chordsData.$add(chordObj)
       .then(function(ref) {
         return $firebaseObject(ref);
@@ -50,13 +63,13 @@ angular.module('playalong.services')
       ref.orderByChild(searchBy).startAt(searchText).endAt(searchText+'~').on("value", function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
-
         if (!rawData) {
           deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
         }
         var result = [];
         //Currently Workaround
-        angular.forEach(rawData, function(value) {
+        angular.forEach(rawData, function(value, chordKey) {
+          value.chordKey = chordKey;
           result.push(value);
         });
         deferred.resolve(result);
@@ -69,6 +82,7 @@ angular.module('playalong.services')
     return {
       addChord: addChord,
       getChordById: getChordById,
-      searchChordsBy: searchChordsBy
+      searchChordsBy: searchChordsBy,
+      increaseChordHitCount: increaseChordHitCount
     };
   }]);

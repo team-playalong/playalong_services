@@ -27,6 +27,10 @@ angular.module('playalong.services')
 	    });
   	};
 
+    $scope.increaseChordHitCount = function(chord) {
+      chords.increaseChordHitCount(chord.chordKey);
+    };
+
 
   	$scope.getChordById = function() {
   		chords.getChordById(1)
