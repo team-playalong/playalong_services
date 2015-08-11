@@ -15,7 +15,7 @@ module.exports = function (grunt) {
       cdnify: 'grunt-google-cdn'
     });
 
-  
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -489,7 +489,7 @@ module.exports = function (grunt) {
     'cdnify',
     'cssmin',
     'uglify',
-    'filerev',
+    //'filerev',
     'usemin',
     'htmlmin'
   ]);
