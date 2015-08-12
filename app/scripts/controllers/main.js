@@ -8,8 +8,8 @@
  * Controller of the gitHubApp
  */
 angular.module('playalong.services')
-  .controller('MainCtrl',['$scope','config','$http', 'chords',
- function ($scope,config,$http,chords) {
+  .controller('MainCtrl',['$scope','config','$http', 'chords','login',
+ function ($scope,config,$http,chords,login) {
     $scope.chordRef = null;
   	$scope.addChord = function() {
   		$http.get(config.paths.mocks.hebrewChord)
@@ -50,6 +50,23 @@ angular.module('playalong.services')
       })
       .catch(function(data) {
         $scope.resultJson = data; 
+      });
+    };
+
+    $scope.loginSocial = function(platform) {
+      login.loginSocial(platform)
+      .then(function(data){
+        console.log(data);
+      });
+    };
+
+    $scope.loginEmail = function(email,password) {
+      login.loginEmail(email,password)
+      .then(function(data){
+        console.log(data);
+      })
+      .catch(function(error) {
+        console.log(error);
       });
     };
   }]);

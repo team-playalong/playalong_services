@@ -32,5 +32,24 @@
     {{resultJson | json}}
   </pre>
   </div>
+
+  <div class="form-group">
+    <div class="control-label">Login Via</div>
+    <div class="btn-group">
+      <button class="btn btn-success" ng-click="loginVia('facebook')">Facebook</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <h4>Or by Email & Password</h4>
+      <div class="control-label">Email</div>
+      <input class="form-control" ng-model="email" type="email" placeholder="email..." />
+    </div>
+    <div class="control-label">Password</div>
+    <input  class="form-control" ng-model="password" type="password" placeholder="password..." />
+  
+    
+  </div>
+  <button class="btn btn-primary pull-right" ng-click="loginEmail(email,password)">Go</button>
+  
   
 </div>

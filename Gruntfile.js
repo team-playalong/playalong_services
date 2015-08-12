@@ -245,7 +245,7 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/scripts/{,*/}*.js',
+          //'<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
@@ -489,7 +489,7 @@ module.exports = function (grunt) {
     'cdnify',
     'cssmin',
     'uglify',
-    //'filerev',
+    'filerev',
     'usemin',
     'htmlmin'
   ]);
