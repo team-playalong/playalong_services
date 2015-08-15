@@ -12,15 +12,49 @@ angular.module('playalong.services')
     var usersRef = new Firebase(config.paths.firebase +'/users');
     return $firebaseAuth(usersRef);
 }])
-  .factory('login', ['$q','Auth','config',function ($q,Auth, config) {
+  .factory('login', ['$q','Auth','config', '$firebaseArray', function ($q,Auth, config,$firebaseArray) {
     Auth.$onAuth(function(authData) {
       if (authData === null) {
         console.log("Not logged in yet");
       } else {
-        console.log("Logged in as", authData.uid);
+        console.log("Logged in as", authData.uid);        
+
+        //Check if user is signed up
+        var usersRef = new Firebase(config.paths.firebase +'/users');
+        usersRef.orderByChild("uid").equalTo(authData.uid).on("value", function(snapshot) {
+          var rawData = snapshot.val();
+
+          if (!rawData) {
+            console.log('user ' + authData.uid +' doesnt exist');
+            //Add it
+            var email, firstName, lastName;
+            switch(authData.auth.provider){
+              case 'facebook':
+                email = authData.facebook.email;
+                firstName = authData.facebook.cachedUserProfile.first_name;
+                lastName = authData.facebook.cachedUserProfile.last_name;
+                break;
+              case 'password':
+                email = authData.password.email;
+                firstName = '';
+                lastName = '';
+                break;
+              default:
+                break;
+            }
+            var usersData = $firebaseArray(usersRef);
+            usersData.$add({
+              //TODO - Validations and extract by platform
+              uid: authData.uid,
+              email: email,
+              firstName: firstName,
+              lastName: lastName
+            });
+          }
+        }); 
+        console.log(authData);
       }
-      // $scope.authData = authData; // This will display the user's name in our view
-      console.log(authData);
+      
     });
 
     var loginEmail = function(email,password) {
@@ -46,13 +80,18 @@ angular.module('playalong.services')
     var loginSocial = function(platform) {
       var deferred = $q.defer();
 
-      Auth.$authWithOAuthRedirect(platform).then(function(authData) {
+      var scope = {
+        scope: 'email' //Needed permissions
+      };
+
+      Auth.$authWithOAuthRedirect(platform, scope).then(function(authData) {
             // User successfully logged in
             console.log(authData);
+            
             deferred.resolve(authData);
       }).catch(function(error) {
         if (error.code === "TRANSPORT_UNAVAILABLE") {
-          Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+          Auth.$authWithOAuthPopup(platform).then(function(authData) {
             // User successfully logged in. We can log to the console
             // since we’re using a popup here
             console.log(authData);
