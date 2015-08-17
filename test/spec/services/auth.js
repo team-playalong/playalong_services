@@ -3,7 +3,7 @@
 describe('Service: Auth', function () {
 
   // load the service's module
-  beforeEach(module('playalongServicesApp'));
+  beforeEach(module('playalong.services'));
 
   // instantiate service
   var Auth;
