@@ -39,6 +39,11 @@ angular.module('playalong.services')
                 firstName = '';
                 lastName = '';
                 break;
+              case 'google':
+                email = authData.google.email;
+                firstName = authData.google.cachedUserProfile.given_name;
+                lastName = authData.google.cachedUserProfile.family_name;
+                break;
               default:
                 break;
             }
