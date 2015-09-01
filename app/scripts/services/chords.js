@@ -9,7 +9,7 @@
  */
 angular.module('playalong.services')
   .factory('chords',['config','$firebaseArray','$q', '$firebaseObject',function (config,$firebaseArray,$q,$firebaseObject) {
-    var ref = new Firebase(config.paths.firebase +'/chords');
+    var ref = new Firebase(config.paths.firebase + 'chords');
     var chordsData = $firebaseArray(ref);
 
     function increaseChordHitCount(chordKey) {

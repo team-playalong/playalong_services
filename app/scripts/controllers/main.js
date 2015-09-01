@@ -8,8 +8,8 @@
  * Controller of the gitHubApp
  */
 angular.module('playalong.services')
-  .controller('MainCtrl',['$scope','config','$http', 'chords','login',
- function ($scope,config,$http,chords,login) {
+  .controller('MainCtrl',['$scope','config','$http', 'chords','login','user',
+ function ($scope,config,$http,chords,login,user) {
     $scope.chordRef = null;
   	$scope.addChord = function() {
   		$http.get(config.paths.mocks.hebrewChord)
@@ -31,6 +31,14 @@ angular.module('playalong.services')
       chords.increaseChordHitCount(chord.chordKey);
     };
 
+
+    $scope.addToFavorites = function() {
+
+      user.addRemoveFavorites(1,1,$scope.isAddFlag)
+      .then(function() {
+        console.log('allGood');
+      });
+    };
 
   	$scope.getChordById = function() {
   		chords.getChordById(1)
