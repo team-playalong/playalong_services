@@ -77,4 +77,14 @@ angular.module('playalong.services')
         console.log(error);
       });
     };
+
+    $scope.getTopChords = function(limitTo) {
+      chords.getTopChords(limitTo)
+      .then(function(data) {
+        $scope.topChords = data;
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+    };
   }]);

@@ -61,5 +61,13 @@
     </div>
     <div class="btn btn-primary" ng-click="addToFavorites()">Favorite Test</div>
   </div>
+
+
+  <br/><br/>
+  <div class="form-group">
+    <div class="control-label">Get Top Chords</div>
+    <div class="btn btn-primary" ng-click="getTopChords(2)">Get Them!</div>
+    <div ng-repeat="chord in topChords track by $index">{{chord}}</div>
+  </div>
     
 </div>

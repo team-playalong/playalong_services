@@ -78,11 +78,35 @@ angular.module('playalong.services')
       return deferred.promise;
     }
 
+    function getTopChords(limitTo) {
+      var deferred = $q.defer();
+
+      //TODO - data validation
+      ref.orderByChild('hitCount').limitToLast(limitTo)
+      .on("value", function(snapshot) {
+        //Extract the object
+        var rawData = snapshot.val();
+        if (!rawData) {
+          deferred.reject('No results for query getTopChords');
+        }
+        var result = [];
+        //Currently Workaround
+        angular.forEach(rawData, function(value, chordKey) {
+          value.chordKey = chordKey;
+          result.push(value);
+        });
+        deferred.resolve(result);
+      });
+      
+      return deferred.promise; 
+    }
+
     // Public API here
     return {
       addChord: addChord,
       getChordById: getChordById,
       searchChordsBy: searchChordsBy,
-      increaseChordHitCount: increaseChordHitCount
+      increaseChordHitCount: increaseChordHitCount,
+      getTopChords: getTopChords
     };
   }]);
