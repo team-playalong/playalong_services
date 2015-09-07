@@ -36,23 +36,7 @@ angular.module('playalong.services')
     }
 
     function getChordById(chordId) {
-      var deferred = $q.defer();
-
-      ref.child(chordId).on("value", function(snapshot) {
-        //Extract the object
-        var rawData = snapshot.val();
-
-        if (!rawData) {
-          deferred.reject('No Chord with Id ' + chordId);
-        }
-        else {
-          deferred.resolve(rawData);
-        }
-        
-        
-      });
-      
-      return deferred.promise;
+      return $firebaseObject(ref.child(chordId));
     }
 
     function searchChordsBy(searchBy, searchText) {

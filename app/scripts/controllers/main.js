@@ -41,13 +41,11 @@ angular.module('playalong.services')
     };
 
   	$scope.getChordById = function() {
-  		chords.getChordById('-JxLKLUR8irZN0TA__XK')
-      .then(function(data) {
-        $scope.resultJson = data; 
-      })
-      .catch(function(data) {
-        $scope.resultJson = data; 
-      });
+  		var result = chords.getChordById('-JxLKLUR8irZN0TA__XK');
+      if (result)
+      {
+        result.$bindTo($scope, "newChord");
+      }
   	};
 
     $scope.searchBy = 'artist';
