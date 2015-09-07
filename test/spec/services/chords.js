@@ -13,7 +13,8 @@ describe('Service: chords', function () {
 
           }
         };
-      };
+      },
+      $rootScope;
 
   beforeEach(function() {
     module(function ($provide) {
@@ -22,14 +23,17 @@ describe('Service: chords', function () {
   
   });
   
-  beforeEach(inject(function (_chords_) {
+  beforeEach(inject(function (_chords_,_$rootScope_) {
     chords = _chords_;
+    $rootScope = _$rootScope_;
   }));
 
+  beforeEach(function() {
+
+  });
   it('should initialize components', function () {
     expect(chords).toBeDefined();
     expect(chords.addChord).toBeDefined();
   });
 
-  
 });

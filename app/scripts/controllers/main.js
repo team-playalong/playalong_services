@@ -36,12 +36,12 @@ angular.module('playalong.services')
 
       user.addRemoveFavorites(1,1,$scope.isAddFlag)
       .then(function() {
-        console.log('allGood');
+        console.log('added to favorites');
       });
     };
 
   	$scope.getChordById = function() {
-  		chords.getChordById(1)
+  		chords.getChordById('-JxLKLUR8irZN0TA__XK')
       .then(function(data) {
         $scope.resultJson = data; 
       })

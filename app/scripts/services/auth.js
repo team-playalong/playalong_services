@@ -25,7 +25,6 @@ angular.module('playalong.services')
           var rawData = snapshot.val();
 
           if (!rawData) {
-            console.log('user ' + authData.uid +' doesnt exist');
             //Add it
             var email, firstName, lastName;
             switch(authData.auth.provider){

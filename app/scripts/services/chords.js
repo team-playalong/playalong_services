@@ -13,7 +13,7 @@ angular.module('playalong.services')
     var chordsData = $firebaseArray(ref);
 
     function increaseChordHitCount(chordKey) {
-      console.log(chordKey);
+      
       var localRef = new Firebase(ref + '/' + chordKey);
       localRef.orderByChild("hitCount").once("value", function(snapshot) {
         localRef.child('hitCount').set((snapshot.val().hitCount || 0 )+1);
@@ -38,19 +38,18 @@ angular.module('playalong.services')
     function getChordById(chordId) {
       var deferred = $q.defer();
 
-      ref.orderByChild("id").equalTo(chordId).on("value", function(snapshot) {
+      ref.child(chordId).on("value", function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
 
         if (!rawData) {
           deferred.reject('No Chord with Id ' + chordId);
         }
-        var result;
-        //Currently Workaround
-        angular.forEach(rawData, function(value) {
-          result = value;
-        });
-        deferred.resolve(result);
+        else {
+          deferred.resolve(rawData);
+        }
+        
+        
       });
       
       return deferred.promise;
