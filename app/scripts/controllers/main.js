@@ -85,4 +85,11 @@ angular.module('playalong.services')
         console.error(error);
       });
     };
+
+    $scope.rateChord = function() {
+      chords.rateChord('-JxLKLUR8irZN0TA__XK',3)
+      .then(function() {
+        console.log('all good');
+      });
+    };
   }]);

@@ -36,4 +36,14 @@ describe('Service: chords', function () {
     expect(chords.addChord).toBeDefined();
   });
 
+  it('should support rating a chord', function(done) {
+    expect(chords.rateChord).toBeDefined();
+
+    chords.rateChord()
+    .then(function() {
+      expect(true).toBe(true);
+      done();
+    });
+  });
+
 });

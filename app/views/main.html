@@ -69,5 +69,11 @@
     <div class="btn btn-primary" ng-click="getTopChords(2)">Get Them!</div>
     <div ng-repeat="chord in topChords track by $index">{{chord}}</div>
   </div>
+
+  <br/><br/>
+  <div class="form-group">
+    <div class="control-label">Rate Chord</div>
+    <button class="btn btn-primary" ng-click="rateChord()">Click to rate</button>
+  </div>
     
 </div>

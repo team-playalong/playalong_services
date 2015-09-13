@@ -25,8 +25,11 @@ angular.module('playalong.services')
     function addChord(chordObj) {
       //TODO validate data        
       
-      //initialize the hit count
+      //initialize data
       chordObj.hitCount = 0;
+      chordObj.rating = 0;
+      chordObj.countRating = 0;
+
       var request = chordsData.$add(chordObj)
       .then(function(ref) {
         return $firebaseObject(ref);
@@ -84,12 +87,49 @@ angular.module('playalong.services')
       return deferred.promise; 
     }
 
+    /**
+     * Add a rating to a chord and +1 to the total number of raters
+     */
+    function rateChord(chordKey, newRating)
+    {
+      var deferred = $q.defer();
+
+      if (newRating < 1 || newRating > 5)
+      {
+        deferred.reject('Rating value should be between 1 - 5');
+      }
+      var localRef = new Firebase(ref + '/' + chordKey);
+      
+      localRef.once('value',function(snapshot) {
+          var countRating = snapshot.val().countRating || 0;
+          var rating = snapshot.val().rating || 0;
+
+          //New weighted average
+          rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
+          rating = Math.round(rating);
+          rating = Math.max(rating,5);
+          localRef.child('countRating').set(countRating + 1);
+          localRef.child('rating').set(rating);
+          return deferred.resolve();
+      },
+      function (errorObject) {
+          deferred.reject(errorObject);
+        });
+
+        
+      
+      //TODO - add the rating to the user as well
+
+      return deferred.promise;
+    }
+
     // Public API here
     return {
       addChord: addChord,
       getChordById: getChordById,
       searchChordsBy: searchChordsBy,
       increaseChordHitCount: increaseChordHitCount,
-      getTopChords: getTopChords
+      getTopChords: getTopChords,
+      rateChord: rateChord
     };
   }]);
