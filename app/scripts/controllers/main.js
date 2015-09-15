@@ -87,7 +87,7 @@ angular.module('playalong.services')
     };
 
     $scope.rateChord = function() {
-      chords.rateChord('-JxLKLUR8irZN0TA__XK',3)
+      chords.rateChord('-JxLKLUR8irZN0TA__XK',1)
       .then(function() {
         console.log('all good');
       });

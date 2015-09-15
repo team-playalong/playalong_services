@@ -107,7 +107,7 @@ angular.module('playalong.services')
           //New weighted average
           rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
           rating = Math.round(rating);
-          rating = Math.max(rating,5);
+          rating = Math.min(rating,5);
           localRef.child('countRating').set(countRating + 1);
           localRef.child('rating').set(rating);
           return deferred.resolve();
