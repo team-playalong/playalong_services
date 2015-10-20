@@ -17,7 +17,7 @@ angular.module('playalong.services')
     function addRemoveFavorites(userKey, chordKey,isAddFlag) {
     	console.log(isAddFlag);
     	console.log(chordKey);
-
+        
     	//Get the user's favorite section
     	//TODO - error handling
       var localRef = new Firebase(ref + '/' + userKey + '/favorites/' + chordKey);

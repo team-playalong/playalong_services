@@ -13,10 +13,14 @@ angular.module('playalong.services')
     return $firebaseAuth(usersRef);
 }])
   .factory('login', ['$q','Auth','config', '$firebaseArray', function ($q,Auth, config,$firebaseArray) {
+    
+    var userModel;
+
     Auth.$onAuth(function(authData) {
       if (authData === null) {
         console.log("Not logged in yet");
-      } else {
+      } 
+      else {
         console.log("Logged in as", authData.uid);        
 
         //Check if user is signed up
@@ -47,13 +51,19 @@ angular.module('playalong.services')
                 break;
             }
             var usersData = $firebaseArray(usersRef);
-            usersData.$add({
+
+            userModel = {
               //TODO - Validations and extract by platform
               uid: authData.uid,
               email: email,
               firstName: firstName,
               lastName: lastName
-            });
+            };
+
+            usersData.$add(userModel);
+          }
+          else {
+            userModel = rawData;
           }
         }); 
         console.log(authData);
@@ -88,14 +98,14 @@ angular.module('playalong.services')
         scope: 'email' //Needed permissions
       };
 
-      Auth.$authWithOAuthRedirect(platform, scope).then(function(authData) {
+      Auth.$authWithOAuthPopup(platform, scope).then(function(authData) {
             // User successfully logged in
             console.log(authData);
             
             deferred.resolve(authData);
       }).catch(function(error) {
         if (error.code === "TRANSPORT_UNAVAILABLE") {
-          Auth.$authWithOAuthPopup(platform).then(function(authData) {
+          Auth.$authWithOAuthRedirect(platform).then(function(authData) {
             // User successfully logged in. We can log to the console
             // since we’re using a popup here
             console.log(authData);
@@ -110,10 +120,20 @@ angular.module('playalong.services')
 
       return deferred.promise;
     };
+
+    var getUser = function() {
+      return userModel; 
+    };
+
+    var isLoggedIn = function() {
+      return !!userModel;
+    };
     
     return {
       loginSocial: loginSocial,
-      loginEmail: loginEmail
+      loginEmail: loginEmail,
+      getUser: getUser,
+      isLoggedIn: isLoggedIn
     };
   }]);
 

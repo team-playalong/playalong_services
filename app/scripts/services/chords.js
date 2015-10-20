@@ -92,6 +92,7 @@ angular.module('playalong.services')
      */
     function rateChord(chordKey, newRating)
     {
+
       var deferred = $q.defer();
 
       if (newRating < 1 || newRating > 5)
@@ -99,18 +100,17 @@ angular.module('playalong.services')
         deferred.reject('Rating value should be between 1 - 5');
       }
       var localRef = new Firebase(ref + '/' + chordKey);
-      
       localRef.once('value',function(snapshot) {
-          var countRating = snapshot.val().countRating || 0;
-          var rating = snapshot.val().rating || 0;
+        var countRating = snapshot.val().countRating || 0;
+        var rating = snapshot.val().rating || 0;
 
-          //New weighted average
-          rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
-          rating = Math.round(rating);
-          rating = Math.min(rating,5);
-          localRef.child('countRating').set(countRating + 1);
-          localRef.child('rating').set(rating);
-          return deferred.resolve();
+        //New weighted average
+        rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
+        rating = Math.round(rating);
+        rating = Math.min(rating,5);
+        localRef.child('countRating').set(countRating + 1);
+        localRef.child('rating').set(rating);
+        return deferred.resolve();
       },
       function (errorObject) {
           deferred.reject(errorObject);

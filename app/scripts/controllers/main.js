@@ -34,7 +34,7 @@ angular.module('playalong.services')
 
     $scope.addToFavorites = function() {
 
-      user.addRemoveFavorites(1,1,$scope.isAddFlag)
+      user.addRemoveFavorites(1,'-JxLKLUR8irZN0TA__XK',$scope.isAddFlag)
       .then(function() {
         console.log('added to favorites');
       });
