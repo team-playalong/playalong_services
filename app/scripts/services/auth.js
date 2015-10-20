@@ -18,7 +18,7 @@ angular.module('playalong.services')
 
     Auth.$onAuth(function(authData) {
       if (authData === null) {
-        console.log("Not logged in yet");
+        userModel = null;
       } 
       else {
         console.log("Logged in as", authData.uid);        
@@ -128,12 +128,17 @@ angular.module('playalong.services')
     var isLoggedIn = function() {
       return !!userModel;
     };
+
+    var logout = function() {
+      Auth.$unauth();
+    };
     
     return {
       loginSocial: loginSocial,
       loginEmail: loginEmail,
       getUser: getUser,
-      isLoggedIn: isLoggedIn
+      isLoggedIn: isLoggedIn,
+      logout: logout
     };
   }]);
 
