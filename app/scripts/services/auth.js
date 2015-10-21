@@ -14,15 +14,17 @@ angular.module('playalong.services')
 }])
   .factory('login', ['$q','Auth','config', '$firebaseArray', function ($q,Auth, config,$firebaseArray) {
     
-    var userModel;
+    var userModel,
+        authModel;
 
     Auth.$onAuth(function(authData) {
       if (authData === null) {
         userModel = null;
+        authModel = null;
       } 
       else {
         console.log("Logged in as", authData.uid);        
-
+        authModel = authData;
         //Check if user is signed up
         var usersRef = new Firebase(config.paths.firebase +'/users');
         usersRef.orderByChild("uid").equalTo(authData.uid).on("value", function(snapshot) {
@@ -132,11 +134,16 @@ angular.module('playalong.services')
     var logout = function() {
       Auth.$unauth();
     };
-    
+      
+    var getAuth = function() {
+      return authModel;
+    };
+
     return {
       loginSocial: loginSocial,
       loginEmail: loginEmail,
       getUser: getUser,
+      getAuth: getAuth,
       isLoggedIn: isLoggedIn,
       logout: logout
     };
