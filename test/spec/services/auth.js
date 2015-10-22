@@ -6,13 +6,34 @@ describe('Service: Auth', function () {
   beforeEach(module('playalong.services'));
 
   // instantiate service
-  var Auth;
-  beforeEach(inject(function (_Auth_) {
+  var Auth,
+      login,
+      $rootScope;
+  beforeEach(inject(function (_Auth_,_login_,_$rootScope_) {
     Auth = _Auth_;
+    login = _login_;
+
+    login.userModel = {
+      provider: 'facebook',
+      facebook: {
+        displayName: 'Dadi Atar'
+      }
+    };  
+
+    $rootScope = _$rootScope_;
+    $rootScope.$digest();
+
   }));
 
   it('should do something', function () {
     expect(!!Auth).toBe(true);
   });
+
+  // it('should get users first name', function() {
+  //   var res;
+  //   res = login.getFullName();
+
+  //   expect(res).toBe('Dadi');
+  // });
 
 });

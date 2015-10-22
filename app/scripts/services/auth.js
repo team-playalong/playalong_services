@@ -65,7 +65,8 @@ angular.module('playalong.services')
             usersData.$add(userModel);
           }
           else {
-            userModel = rawData;
+
+            userModel = rawData[Object.keys(rawData)[0]]; 
           }
         }); 
         console.log(authData);
@@ -139,13 +140,30 @@ angular.module('playalong.services')
       return authModel;
     };
 
+    var getFullName = function() {
+      return this.getFirstName() + ' ' + this.getLastName();
+    };
+
+    var getLastName = function() {
+      return userModel ? userModel.lastName : '';
+    };
+
+    var getFirstName = function() {
+      return userModel ? userModel.firstName : '';
+    };
+
+
+
     return {
       loginSocial: loginSocial,
       loginEmail: loginEmail,
       getUser: getUser,
       getAuth: getAuth,
       isLoggedIn: isLoggedIn,
-      logout: logout
+      logout: logout,
+      getFirstName: getFirstName,
+      getLastName: getLastName,
+      getFullName: getFullName
     };
   }]);
 
