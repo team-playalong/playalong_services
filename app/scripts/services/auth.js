@@ -60,7 +60,7 @@ angular.module('playalong.services')
               email: email,
               firstName: firstName,
               lastName: lastName,
-              userType: []
+              userType: 'normal'
             };
 
             usersData.$add(userModel);
