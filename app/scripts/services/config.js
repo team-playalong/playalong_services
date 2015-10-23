@@ -11,12 +11,9 @@ angular.module('playalong.services')
   .constant('config', (function() {
     var config = {
       env: PLY_CONFIG.env,
-      envToDbMap: {
-        dev: 'dev/',
-        prod: 'prod/'
-      },
       paths: {
-        firebase: 'https://playalong.firebaseio.com/',
+        firebaseDev: 'https://playalong.firebaseio.com/',
+        firebaseProd: 'https://playalong-prod.firebaseio.com/',
         mocks: {
           singleChord: 'mocks/singleChord.json',
           hebrewChord: 'mocks/hebrewChord.json'
@@ -24,9 +21,8 @@ angular.module('playalong.services')
       }
     };
 
-    //This is an addition to the reference in order to create two DBs
-    var envPath = config.envToDbMap && config.envToDbMap[config.env] ? config.envToDbMap[config.env] : 'dev';
-    config.paths.firebase += envPath;
+    //This is an addition to the reference in order to create two envs
+    config.paths.firebase = config.env === 'dev' ? config.paths.firebaseDev : config.paths.firebaseProd;
 
     return config;
   })());

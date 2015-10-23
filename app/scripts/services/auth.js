@@ -59,7 +59,8 @@ angular.module('playalong.services')
               uid: authData.uid,
               email: email,
               firstName: firstName,
-              lastName: lastName
+              lastName: lastName,
+              userType: []
             };
 
             usersData.$add(userModel);
