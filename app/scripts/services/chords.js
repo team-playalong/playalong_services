@@ -27,7 +27,7 @@ angular.module('playalong.services')
       
       //initialize data
       chordObj.hitCount = 0;
-      chordObj.rating = 0;
+      chordObj.rating = 1;
       chordObj.countRating = 0;
 
       var request = chordsData.$add(chordObj)
@@ -101,8 +101,8 @@ angular.module('playalong.services')
       }
       var localRef = new Firebase(ref + '/' + chordKey);
       localRef.once('value',function(snapshot) {
-        var countRating = snapshot.val().countRating || 0;
-        var rating = snapshot.val().rating || 0;
+        var countRating = snapshot.val().countRating || 1;
+        var rating = snapshot.val().rating || 1;
 
         //New weighted average
         rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
