@@ -153,6 +153,10 @@ angular.module('playalong.services')
       return userModel ? userModel.firstName : '';
     };
 
+    var isSuperUser = function() {
+      return  this.getUser() && this.getUser().userType && 
+              (this.getUser().userType.indexOf('superuser') !== -1 || this.getUser().userType.indexOf('admin') !== -1) ;  
+    };
 
 
     return {
@@ -164,7 +168,8 @@ angular.module('playalong.services')
       logout: logout,
       getFirstName: getFirstName,
       getLastName: getLastName,
-      getFullName: getFullName
+      getFullName: getFullName,
+      isSuperUser: isSuperUser
     };
   }]);
 
