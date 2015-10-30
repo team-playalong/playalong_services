@@ -46,7 +46,10 @@ angular.module('playalong.services')
       var deferred = $q.defer();
 
       //TODO - data validation
-      ref.orderByChild(searchBy).startAt(searchText).endAt(searchText+'~').on("value", function(snapshot) {
+      ref.orderByChild(searchBy)
+      .startAt(searchText)
+      .endAt(searchText+'~')
+      .once("value", function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
         if (!rawData) {
@@ -55,8 +58,12 @@ angular.module('playalong.services')
         var result = [];
         //Currently Workaround
         angular.forEach(rawData, function(value, chordKey) {
-          value.chordKey = chordKey;
-          result.push(value);
+          //Currently doing like this because can't fiter both on approved and on search text
+          if (value.approved)
+          {
+            value.chordKey = chordKey;
+            result.push(value);  
+          }
         });
         deferred.resolve(result);
       });
