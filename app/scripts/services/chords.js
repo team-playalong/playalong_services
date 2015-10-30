@@ -22,6 +22,20 @@ angular.module('playalong.services')
 
     }
 
+    function extractApprovedChords(rawData) {
+      var result = [];
+      //Currently Workaround
+      angular.forEach(rawData, function(value, chordKey) {
+        if (value.approved)
+        {
+          value.chordKey = chordKey;
+          result.push(value);  
+        }
+      });
+
+      return result;
+    }
+
     function addChord(chordObj) {
       //TODO validate data        
       
@@ -55,16 +69,7 @@ angular.module('playalong.services')
         if (!rawData) {
           deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
         }
-        var result = [];
-        //Currently Workaround
-        angular.forEach(rawData, function(value, chordKey) {
-          //Currently doing like this because can't fiter both on approved and on search text
-          if (value.approved)
-          {
-            value.chordKey = chordKey;
-            result.push(value);  
-          }
-        });
+        var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
       
@@ -82,12 +87,7 @@ angular.module('playalong.services')
         if (!rawData) {
           deferred.reject('No results for query getTopChords');
         }
-        var result = [];
-        //Currently Workaround
-        angular.forEach(rawData, function(value, chordKey) {
-          value.chordKey = chordKey;
-          result.push(value);
-        });
+        var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
       
