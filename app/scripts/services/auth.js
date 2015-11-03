@@ -12,7 +12,8 @@ angular.module('playalong.services')
     var usersRef = new Firebase(config.paths.firebase +'/users');
     return $firebaseAuth(usersRef);
 }])
-  .factory('login', ['$q','Auth','config', '$firebaseArray', function ($q,Auth, config,$firebaseArray) {
+  .factory('login', ['$q','Auth','config', '$firebaseArray', 'customerIoHelper',
+    function ($q,Auth, config,$firebaseArray,customerIoHelper) {
     
     var userModel,
         authModel;
@@ -23,7 +24,6 @@ angular.module('playalong.services')
         authModel = null;
       } 
       else {
-        console.log("Logged in as", authData.uid);        
         authModel = authData;
         //Check if user is signed up
         var usersRef = new Firebase(config.paths.firebase +'/users');
@@ -60,7 +60,8 @@ angular.module('playalong.services')
               email: email,
               firstName: firstName,
               lastName: lastName,
-              userType: 'normal'
+              userType: 'normal',
+              creationDate: new Date().getTime() / 1000
             };
 
             usersData.$add(userModel);
@@ -70,9 +71,10 @@ angular.module('playalong.services')
             userModel = rawData[Object.keys(rawData)[0]]; 
           }
         }); 
-        console.log(authData);
       }
       
+      //Identify against customerIo
+      customerIoHelper.identifyUser(userModel);
     });
 
     var loginEmail = function(email,password) {
@@ -87,7 +89,6 @@ angular.module('playalong.services')
           console.log("Error creating user:", error);
           deferred.reject(error);
         } else {
-          console.log("Successfully created user account with uid:", userData.uid);
           deferred.resolve(userData);
         }
       });
@@ -104,15 +105,10 @@ angular.module('playalong.services')
 
       Auth.$authWithOAuthPopup(platform, scope).then(function(authData) {
             // User successfully logged in
-            console.log(authData);
-            
             deferred.resolve(authData);
       }).catch(function(error) {
         if (error.code === "TRANSPORT_UNAVAILABLE") {
           Auth.$authWithOAuthRedirect(platform).then(function(authData) {
-            // User successfully logged in. We can log to the console
-            // since we’re using a popup here
-            console.log(authData);
             deferred.resolve(authData);
           });
         } else {

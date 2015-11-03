@@ -6,4 +6,20 @@
        }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
        ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');</script> <script src="env.js"></script> <script src="scripts/vendor.js"></script> <script src="scripts/scripts.js"></script> </body> </html>
+       ga('send', 'pageview');</script> <script src="env.js"></script> <script src="scripts/vendor.js"></script> <script src="scripts/scripts.js"></script> <!-- Customer Io --> <script type="text/javascript">var envToSiteId = {
+        dev: '8a29f20ea815c508a73a',
+        prod: 'a003ae985929496a12c5'
+      };
+      var _cio = _cio || [];
+      (function() {
+        var a,b,c;a=function(f){return function(){_cio.push([f].
+        concat(Array.prototype.slice.call(arguments,0)))}};b=["load","identify",
+        "sidentify","track","page"];for(c=0;c<b.length;c++){_cio[b[c]]=a(b[c])};
+        var t = document.createElement('script'),
+            s = document.getElementsByTagName('script')[0];
+        t.async = true;
+        t.id    = 'cio-tracker';
+        t.setAttribute('data-site-id', envToSiteId[PLY_CONFIG.env || 'dev']);
+        t.src = 'https://assets.customer.io/assets/track.js';
+        s.parentNode.insertBefore(t, s);
+      })();</script> </body> </html>
