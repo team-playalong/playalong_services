@@ -13,8 +13,11 @@ describe('Directive: autoDirection', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<div auto-direction>English Text</div>');
+    scope.test = 'rtl';
+    element = angular.element('<div auto-direction auto-direction-scope-var="test">English Text</div>');
     element = $compile(element)(scope);
-    expect(element).toBeDefined();
+    scope.$apply();
+    dumper(element);
+    expect(element.css('direction')).toEqual('rtl');
   }));
 });

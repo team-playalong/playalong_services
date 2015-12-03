@@ -15,11 +15,11 @@ angular.module('playalong.services')
 
     function addRemoveFavorites(userKey, chordKey,isAddFlag) {
     	//Get the user's favorite section
-    	//TODO - error handling
+      var callback = function() {
+        
+      };
       var localRef = new Firebase(ref + '/' + userKey + '/favorites/' + chordKey);
-      localRef.orderByChild("isFavorite").once("value", function(snapshot) {
-        // localRef.child('isFavorite').set((snapshot.val().hitCount || 0 )+1);
-      }); 
+
     }
 
     return {

@@ -12,11 +12,6 @@ angular.module('playalong.services')
     return {
       restrict: 'A',
       link: function postLink(scope, element, attrs) {
-        // $interval(function() {
-        // 	var text = element.text();
-
-        // },1000, 0 /*infinity*/,false /*no apply*/);
-
 
         function checkRTL(s){           
           var ltrChars    = 'A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF'+'\u2C00-\uFB1C\uFDFE-\uFE6F\uFEFD-\uFFFF',
@@ -30,14 +25,24 @@ angular.module('playalong.services')
         function keypress(e){
             // need to wait for the character
             if (e.charCode === 32) {return;}
-            setTimeout(function(){
-                var isRTL = checkRTL( String.fromCharCode(e.charCode) ),
-                    dir = isRTL ? 'RTL' : 'LTR';
-                
-                element.css('direction', dir);
-            },0);
+            var isRTL = checkRTL( String.fromCharCode(e.charCode) ),
+                dir = isRTL ? 'RTL' : 'LTR';
+            
+            element.css('direction', dir);
         }
-        var input = element.on('keypress', keypress)[0];
+        
+
+
+        if (attrs.autoDirectionScopeVar &&
+            scope[attrs.autoDirectionScopeVar] && 
+            scope[attrs.autoDirectionScopeVar].toLowerCase && 
+            (scope[attrs.autoDirectionScopeVar].toLowerCase() === 'rtl' || scope[attrs.autoDirectionScopeVar].toLowerCase() === 'ltr' ))
+        {
+          element.css('direction',scope[attrs.autoDirectionScopeVar].toLowerCase() );  
+        }
+        else {
+          var input = element.on('keypress', keypress)[0];
+        }
       }
     };
   }]);
