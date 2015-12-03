@@ -29,11 +29,4 @@ describe('Service: Auth', function () {
     expect(!!Auth).toBe(true);
   });
 
-  // it('should get users first name', function() {
-  //   var res;
-  //   res = login.getFullName();
-
-  //   expect(res).toBe('Dadi');
-  // });
-
 });

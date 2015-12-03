@@ -7,7 +7,19 @@ var mockData = 	(function() {
 		};
 	}
 
+	var getMockUser = function() {
+		return {
+			email: "atardadi@gmail.com", 
+			firstName: "Dadi", 
+			lastName: "Atar", 
+			uid: "google:116141183216896319819", 
+			userType: "superuser",
+			creationDate: 123123123
+		};
+	};
+
 	return {
-		getMockChord: getMockChord
+		getMockChord: getMockChord,
+		getMockUser: getMockUser
 	}	
 })();

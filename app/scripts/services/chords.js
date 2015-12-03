@@ -22,6 +22,20 @@ angular.module('playalong.services')
 
     }
 
+    function extractApprovedChords(rawData) {
+      var result = [];
+      //Currently Workaround
+      angular.forEach(rawData, function(value, chordKey) {
+        if (value.approved)
+        {
+          value.chordKey = chordKey;
+          result.push(value);  
+        }
+      });
+
+      return result;
+    }
+
     function addChord(chordObj) {
       //TODO validate data        
       
@@ -46,18 +60,16 @@ angular.module('playalong.services')
       var deferred = $q.defer();
 
       //TODO - data validation
-      ref.orderByChild(searchBy).startAt(searchText).endAt(searchText+'~').on("value", function(snapshot) {
+      ref.orderByChild(searchBy)
+      .startAt(searchText)
+      .endAt(searchText+'~')
+      .once("value", function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
         if (!rawData) {
           deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
         }
-        var result = [];
-        //Currently Workaround
-        angular.forEach(rawData, function(value, chordKey) {
-          value.chordKey = chordKey;
-          result.push(value);
-        });
+        var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
       
@@ -75,12 +87,7 @@ angular.module('playalong.services')
         if (!rawData) {
           deferred.reject('No results for query getTopChords');
         }
-        var result = [];
-        //Currently Workaround
-        angular.forEach(rawData, function(value, chordKey) {
-          value.chordKey = chordKey;
-          result.push(value);
-        });
+        var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
       

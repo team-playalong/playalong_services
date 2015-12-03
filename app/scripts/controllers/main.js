@@ -12,6 +12,7 @@ angular.module('playalong.services')
  function ($scope,config,$http,chords,login,user) {
     $scope.login = login;
     $scope.chordRef = null;
+    $scope.test = 'ltr';
   	$scope.addChord = function() {
   		$http.get(config.paths.mocks.hebrewChord)
 	    .success(function(response) {
