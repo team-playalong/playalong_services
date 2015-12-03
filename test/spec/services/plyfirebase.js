@@ -22,35 +22,35 @@ describe('Service: plyFirebase', function () {
     expect(res).toBeDefined();
   });
 
-  it('should get a reference with a callback function', function(done) {
-    window.dummyFunc = function() {};
-    spyOn(window,'dummyFunc');
+ // it('should get a reference with a callback function', function(done) {
+//    window.dummyFunc = function() {};
+  //  spyOn(window,'dummyFunc');
 
-    plyFirebase.getRefWithCallback();
-    expect(window.dummyFunc).not.toHaveBeenCalled();
+    //plyFirebase.getRefWithCallback();
+   // expect(window.dummyFunc).not.toHaveBeenCalled();
 
-    plyFirebase.getRefWithCallback({
-      relPath: 'asdasd',
-      callback: window.dummyFunc,
-      isOnce: true
-    });
+   // plyFirebase.getRefWithCallback({
+     // relPath: 'asdasd',
+     // callback: window.dummyFunc,
+     // isOnce: true
+   // });
 
-    setTimeout(function() {
-      expect(window.dummyFunc).toHaveBeenCalled();
-      done();
-    },3000);
+   // setTimeout(function() {
+     // expect(window.dummyFunc).toHaveBeenCalled();
+     // done();
+   // },3000);
     
-  });
+ // });
 
-  it('should perform a simple select query', function(done) {
-    plyFirebase.selectSimpleQuery('users', 'firstName','equalTo','Dadi')
-    .then(function(data) {
-      expect(data).toBeDefined();
-      done();
-    });
+//  it('should perform a simple select query', function(done) {
+  //  plyFirebase.selectSimpleQuery('users', 'firstName','equalTo','Dadi')
+   // .then(function(data) {
+    //  expect(data).toBeDefined();
+     // done();
+   // });
 
-    $rootScope.$apply();
+   // $rootScope.$apply();
 
-  });
+ // });
 
 });
