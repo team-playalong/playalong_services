@@ -25,7 +25,7 @@ describe('Service: plyFirebase', function () {
   });
 
   it('should get the value of a node', function(done) {
-    
+
     plyFirebase.getNode({
       relPath: 'users',
       isOnce: true
@@ -65,7 +65,7 @@ describe('Service: plyFirebase', function () {
 
     setTimeout(function() {
       $rootScope.$apply();
-    },2000);   
+    },2000);
   });
 });
 
