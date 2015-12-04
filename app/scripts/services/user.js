@@ -9,17 +9,32 @@
  */
 /*jshint unused:false*/
 angular.module('playalong.services')
-  .service('user', ['config','$firebaseArray',function (config,$firebaseArray) {
-    var ref = new Firebase(config.paths.firebase + 'users');
-    var usersData = $firebaseArray(ref);
-
-    function addRemoveFavorites(userKey, chordKey,isAddFlag) {
+  .service('user', ['config','plyFirebase','$q',
+    function (config,plyFirebase,$q) {
+    
+    function addRemoveFavorites(userKey, chordObj,isAddFlag) {
+      var deferred = $q.defer();
     	//Get the user's favorite section
-      var callback = function() {
-        
-      };
-      var localRef = new Firebase(ref + '/' + userKey + '/favorites/' + chordKey);
+      chordObj = chordObj || {};
+      var favoritesRelPath = userKey + '/favorites/';
 
+      if (!isAddFlag)
+      {
+        plyFirebase.removeWithQuery(favoritesRelPath,'chordKey','equalTo',chordObj.chordKey)
+        .then(function(data) {
+          deferred.resolve();
+        });
+      }
+      else { //Need to add a new record to the users favorites
+        plyFirebase.insert(favoritesRelPath,{
+          chordKey: chordObj.chordKey,
+          artist: chordObj.artist,
+          title: chordObj.title,
+          creationDate: new Date()
+        });
+      }
+
+      return deferred.promise;
     }
 
     return {

@@ -15,19 +15,18 @@ angular.module('playalong.services')
 			return new Firebase(config.paths.firebase + relPath);
 		};
 
-		var getRefWithCallback = function(params) {
+		var getNode = function(params) {
+			var deferred = $q.defer();
 			params = params || {};
 			var ref = getRef(params.relPath);
-			if (params.callback)
-			{
-				var response = params.isOnce ? 'once' : 'on';
-				ref[response]('value',function(snapshot) {
-					params.callback(snapshot.val());
-				});
-			}
+			var response = params.isOnce ? 'once' : 'on';
+			ref[response]('value',function(snapshot) {
+				deferred.resolve(snapshot.val());
+			});
+			return deferred.promise;
 		};
 
-		var selectSimpleQuery = function(relPath,fieldName,operator,fieldValue) {
+		var selectSimpleQuery = function(relPath,fieldName,operator,fieldValue, refFlag) {
 			var deferred = $q.defer();
 			//TODO - validate operator
 			var ref = getRef(relPath);
@@ -35,15 +34,59 @@ angular.module('playalong.services')
 			ref
 				.orderByChild(fieldName)[operator](fieldValue)
 				.once('value',function(snapshot) {
-					deferred.resolve(snapshot.val());
+					var res = refFlag ? snapshot : snapshot.val();
+					deferred.resolve(res);
 				});
 
 			return deferred.promise;
 		};	
 
+		var removeWithQuery = function(relPath,fieldName,operator,fieldValue) {
+			var deferred = $q.defer();
+
+			selectSimpleQuery(relPath,fieldName,operator,fieldValue, true)
+				.then(function(data) {
+					if (data && data.ref())
+					{
+						data.ref().remove();
+						deferred.resolve({
+							message: 'success'
+						});
+					}
+					else {
+						deferred.reject({
+							message: 'ref does not exist'});
+					}
+				});
+
+			return deferred.promise;
+		};
+
+		var insert = function(relPath, dataObj) {
+			var deferred = $q.defer();
+			var ref = getRef(relPath);
+			console.log(ref);
+			if (ref && ref.push)
+			{
+				ref.push(dataObj, function() {
+					deferred.resolve({
+						message: 'success'
+					});
+				});
+			}
+			else 
+			{
+				setTimeout(deferred.reject,10);
+			}
+			
+			return deferred.promise;
+		};
+
     return {
     	getRef: getRef,
-    	getRefWithCallback: getRefWithCallback,
-    	selectSimpleQuery: selectSimpleQuery
+    	getNode: getNode,
+    	selectSimpleQuery: selectSimpleQuery,
+    	removeWithQuery: removeWithQuery,
+    	insert: insert
     };
   }]);

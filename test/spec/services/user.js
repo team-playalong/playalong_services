@@ -6,9 +6,16 @@ describe('Service: user', function () {
   beforeEach(module('playalong.services'));
 
   // instantiate service
-  var user;
-  beforeEach(inject(function (_user_) {
+  var user,
+      plyFirebase,
+      $rootScope,
+      $q;
+
+  beforeEach(inject(function (_user_,_plyFirebase_,_$rootScope_,_$q_) {
     user = _user_;
+    plyFirebase = _plyFirebase_;
+    $rootScope = _$rootScope_;
+    $q = _$q_;
   }));
 
   it('should initialize all components', function () {
@@ -16,12 +23,12 @@ describe('Service: user', function () {
     expect(user.addRemoveFavorites).toBeDefined();
   });
 
-  it('should add and remove from favorites', function() {
-    var userId = 1,
-        chordId = 2,
-        isAddFlag = true;
+  it('should support adding a new song to favorites', function() {
+    spyOn(plyFirebase,'selectSimpleQuery').and.callFake(function() {
+      return $q.reject({});
+    });
 
-    user.addRemoveFavorites(userId, chordId,isAddFlag);
+    user.addRemoveFavorites();
+    $rootScope.$apply();
   });
-
 });
