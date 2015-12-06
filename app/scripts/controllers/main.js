@@ -38,7 +38,7 @@ angular.module('playalong.services')
       var userModel = login.getUser();
       var params = {
         userKey: userModel.userKey,
-        isAddFlag: true,
+        isAddFlag: false,
         chordObj: {
           chordKey: '-JxLKLUR8irZN0TA__XK',
           artist: 'Asaf Avidan',

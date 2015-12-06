@@ -21,6 +21,7 @@ angular.module('playalong.services')
 			var ref = getRef(params.relPath);
 			var response = params.isOnce ? 'once' : 'on';
 			ref[response]('value',function(snapshot) {
+				console.log(snapshot);
 				deferred.resolve(snapshot.val());
 			});
 			return deferred.promise;

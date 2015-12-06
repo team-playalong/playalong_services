@@ -28,7 +28,7 @@ angular.module('playalong.services')
       params = params || {};
     	//Get the user's favorite section
       params.chordObj = params.chordObj || {};
-      var favoritesRelPath = params.userKey + '/favorites/';
+      var favoritesRelPath = 'users/' + params.userKey + '/favorites/';
 
       if (!params.isAddFlag)
       {
