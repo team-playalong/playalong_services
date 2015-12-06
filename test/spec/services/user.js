@@ -41,4 +41,24 @@ describe('Service: user', function () {
     });
     $rootScope.$apply();
   });
+
+  //TODO - fix test
+  // it('should get all of the users favorites', function(done) {
+  //   spyOn(plyFirebase,'getNode').and.callFake(function() {
+  //     return $q.reject({
+  //       message: 'not existing'
+  //     });
+  //   }); 
+  //   user.getFavorites('notExisting')
+  //   .then(function(data) {
+  //     console.log(data);
+  //   })
+  //   .catch(function(data) {
+  //     expect(data).toBeDefined();
+  //     expect(data.message).toBe();
+  //     done();
+  //   });
+
+  //   $rootScope.$apply();
+  // });
 });

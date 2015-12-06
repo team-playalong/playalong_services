@@ -38,7 +38,7 @@ angular.module('playalong.services')
       var userModel = login.getUser();
       var params = {
         userKey: userModel.userKey,
-        isAddFlag: false,
+        isAddFlag: true,
         chordObj: {
           chordKey: '-JxLKLUR8irZN0TA__XK',
           artist: 'Asaf Avidan',
@@ -102,6 +102,15 @@ angular.module('playalong.services')
       chords.rateChord('-JxLKLUR8irZN0TA__XK',1)
       .then(function() {
         console.log('all good');
+      });
+    };
+    $scope.getFavorites = function() {
+      user.getFavorites('-K4q5OByh18b-71C6Ju6')
+      .then(function(data) {
+        $scope.favorites = data;
+      })
+      .catch(function(data){
+        console.warn(data.message);
       });
     };
   }]);

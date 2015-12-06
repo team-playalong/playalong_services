@@ -15,14 +15,23 @@ angular.module('playalong.services')
 			return new Firebase(config.paths.firebase + relPath);
 		};
 
+		/**
+		 * [getNode description]
+		 * @param  params - isOnce, relPath
+		 */
 		var getNode = function(params) {
 			var deferred = $q.defer();
 			params = params || {};
 			var ref = getRef(params.relPath);
 			var response = params.isOnce ? 'once' : 'on';
 			ref[response]('value',function(snapshot) {
-				console.log(snapshot);
 				deferred.resolve(snapshot.val());
+			},
+			function(data) {
+				console.log(data);
+				deferred.reject({
+					message: 'Node does not exist'
+				});
 			});
 			return deferred.promise;
 		};

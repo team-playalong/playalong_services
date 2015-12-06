@@ -9,8 +9,8 @@
  */
 /*jshint unused:false*/
 angular.module('playalong.services')
-  .service('user', ['config','plyFirebase','$q',
-    function (config,plyFirebase,$q) {
+  .service('user', ['config','plyFirebase','$q','login',
+    function (config,plyFirebase,$q,login) {
     
     /**
      * [addRemoveFavorites description]
@@ -23,8 +23,15 @@ angular.module('playalong.services')
      * },
      * userKey
      */
-    function addRemoveFavorites(params) {
+    var addRemoveFavorites = function(params) {
+
       var deferred = $q.defer();
+      if (!login.isLoggedIn())
+      {
+        deferred.reject({
+          message: 'user is not logged in'
+        });
+      }
       params = params || {};
     	//Get the user's favorite section
       params.chordObj = params.chordObj || {};
@@ -50,9 +57,32 @@ angular.module('playalong.services')
       }
 
       return deferred.promise;
-    }
+    };
+
+    var getFavorites = function(userKey) {
+      var deferred = $q.defer();
+      plyFirebase.getNode({
+        relPath: 'users/' + userKey + '/favorites',
+        isOnce: true
+      })
+      .then(function(data) {
+        if (!!data)
+        {
+          deferred.resolve(data);  
+        }
+        else {
+          deferred.reject({
+            message: 'No favorites found'
+          });
+        }
+        
+      });
+
+      return deferred.promise;
+    };
 
     return {
-    	addRemoveFavorites: addRemoveFavorites
+    	addRemoveFavorites: addRemoveFavorites,
+      getFavorites:getFavorites
     };
   }]);

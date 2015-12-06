@@ -13,6 +13,7 @@
   "globals": {
     "angular": false,
     "Firebase": false,
-    "PLY_CONFIG": false
+    "PLY_CONFIG": false,
+    "dumper": false
   }
 }
