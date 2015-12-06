@@ -23,12 +23,22 @@ describe('Service: user', function () {
     expect(user.addRemoveFavorites).toBeDefined();
   });
 
-  it('should support adding a new song to favorites', function() {
-    spyOn(plyFirebase,'selectSimpleQuery').and.callFake(function() {
-      return $q.reject({});
+  it('should support adding a new song to favorites', function(done) {
+    spyOn(plyFirebase,'removeWithQuery').and.callFake(function() {
+      return $q.when({});
     });
 
-    user.addRemoveFavorites();
+    var params = {
+      chordObj: {},
+      isAddFlag: false,
+      userKey: ''
+    };
+
+    user.addRemoveFavorites(params)
+    .then(function(data) {
+      expect(data).toBeDefined();
+      done();
+    });
     $rootScope.$apply();
   });
 });

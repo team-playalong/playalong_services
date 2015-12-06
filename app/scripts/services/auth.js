@@ -69,6 +69,9 @@ angular.module('playalong.services')
           else {
 
             userModel = rawData[Object.keys(rawData)[0]]; 
+
+            //Append the key to the model
+            userModel.userKey = Object.keys(rawData)[0];
           }
         }); 
       }

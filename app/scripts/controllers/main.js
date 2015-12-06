@@ -35,9 +35,19 @@ angular.module('playalong.services')
 
 
     $scope.addToFavorites = function() {
-
-      user.addRemoveFavorites(1,'-JxLKLUR8irZN0TA__XK',$scope.isAddFlag)
-      .then(function() {
+      var userModel = login.getUser();
+      var params = {
+        userKey: userModel.userKey,
+        isAddFlag: true,
+        chordObj: {
+          chordKey: '-JxLKLUR8irZN0TA__XK',
+          artist: 'Asaf Avidan',
+          title: 'Gold Shadow'
+        }
+      };
+      user.addRemoveFavorites(params)
+      .then(function(data) {
+        console.log(data);
         console.log('added to favorites');
       });
     };

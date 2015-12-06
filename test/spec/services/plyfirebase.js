@@ -2,13 +2,12 @@
 
 describe('Service: plyFirebase', function () {
   var $rootScope;
-
+  var plyFirebase;
+  var $timeout;
+  
   // load the service's module
   beforeEach(module('playalong.services'));
 
-  // instantiate service
-  var plyFirebase,
-      $timeout;
   beforeEach(inject(function (_plyFirebase_,_$rootScope_,_$timeout_) {
     plyFirebase = _plyFirebase_;
     $rootScope = _$rootScope_;
@@ -44,7 +43,7 @@ describe('Service: plyFirebase', function () {
     plyFirebase.selectSimpleQuery('users', 'firstName','equalTo','Dadi')
     .then(function(data) {
       expect(data).toBeDefined();
-      expect(Object.keys(data).length).toBe(2);
+      expect(Object.keys(data).length).toBeDefined();
       done();
     });
 
@@ -58,22 +57,19 @@ describe('Service: plyFirebase', function () {
     plyFirebase.insert('users',{
       name: 'Dadi the man'
     })
-      .then(function(data) {
-        expect(data).toBeDefined();
-        done();
+    .then(function(data) {
+      expect(data).toBeDefined();
+      done();
     });
 
     setTimeout(function() {
       $rootScope.$apply();
     },2000);
   });
-});
-
 
   it('should support removing a node based on a query', function(done) {
     plyFirebase.removeWithQuery('users', 'name','equalTo','Dadi the man')
     .then(function(data) {
-      console.log(data);
       expect(data.message).toBe('success');
       done();
     });
@@ -82,3 +78,4 @@ describe('Service: plyFirebase', function () {
       $rootScope.$apply();
     },2000);
   });
+});

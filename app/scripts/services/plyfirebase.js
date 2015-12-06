@@ -65,7 +65,6 @@ angular.module('playalong.services')
 		var insert = function(relPath, dataObj) {
 			var deferred = $q.defer();
 			var ref = getRef(relPath);
-			console.log(ref);
 			if (ref && ref.push)
 			{
 				ref.push(dataObj, function() {

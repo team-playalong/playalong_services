@@ -12,25 +12,40 @@ angular.module('playalong.services')
   .service('user', ['config','plyFirebase','$q',
     function (config,plyFirebase,$q) {
     
-    function addRemoveFavorites(userKey, chordObj,isAddFlag) {
+    /**
+     * [addRemoveFavorites description]
+     * @param  params {
+     * isAddFlag: true
+     * chordObj : {
+     *  chordKey: 
+        artist:
+        title: 
+     * },
+     * userKey
+     */
+    function addRemoveFavorites(params) {
       var deferred = $q.defer();
+      params = params || {};
     	//Get the user's favorite section
-      chordObj = chordObj || {};
-      var favoritesRelPath = userKey + '/favorites/';
+      params.chordObj = params.chordObj || {};
+      var favoritesRelPath = params.userKey + '/favorites/';
 
-      if (!isAddFlag)
+      if (!params.isAddFlag)
       {
-        plyFirebase.removeWithQuery(favoritesRelPath,'chordKey','equalTo',chordObj.chordKey)
+        plyFirebase.removeWithQuery(favoritesRelPath,'chordKey','equalTo',params.chordObj.chordKey)
         .then(function(data) {
-          deferred.resolve();
+          deferred.resolve(data);
         });
       }
       else { //Need to add a new record to the users favorites
         plyFirebase.insert(favoritesRelPath,{
-          chordKey: chordObj.chordKey,
-          artist: chordObj.artist,
-          title: chordObj.title,
+          chordKey: params.chordObj.chordKey,
+          artist: params.chordObj.artist,
+          title: params.chordObj.title,
           creationDate: new Date()
+        })
+        .then(function(data) {
+          deferred.resolve(data);
         });
       }
 
