@@ -64,4 +64,15 @@ describe('Service: user', function () {
 
   //   $rootScope.$apply();
   // });
+  
+  // it('should check if a chord is a favorite', function(done) {
+  //   user.isChordFavorite('-K4q5OByh18b-71C6Ju6','-JxLKLUR8irZN0TA__XK')
+  //   .then(function(result) {
+  //     expect(result).toBe(true);
+  //     done();
+  //   });
+    
+  //   $rootScope.$apply();
+
+  // });
 });

@@ -66,6 +66,7 @@ angular.module('playalong.services')
         isOnce: true
       })
       .then(function(data) {
+        console.log('msg');
         if (!!data)
         {
           deferred.resolve(data);  
@@ -81,8 +82,19 @@ angular.module('playalong.services')
       return deferred.promise;
     };
 
+    var isChordFavorite = function(userKey,chordKey) {
+      var deferred = $q.defer();
+      var relPath = 'users/' + userKey + '/favorites';
+      plyFirebase.selectSimpleQuery(relPath,'chordKey','equalTo',chordKey)
+      .then(function(data) {
+        deferred.resolve(!!data);
+      });
+
+      return deferred.promise;
+    };
     return {
     	addRemoveFavorites: addRemoveFavorites,
-      getFavorites:getFavorites
+      getFavorites:getFavorites,
+      isChordFavorite: isChordFavorite
     };
   }]);

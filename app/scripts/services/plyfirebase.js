@@ -27,8 +27,7 @@ angular.module('playalong.services')
 			ref[response]('value',function(snapshot) {
 				deferred.resolve(snapshot.val());
 			},
-			function(data) {
-				console.log(data);
+			function() {
 				deferred.reject({
 					message: 'Node does not exist'
 				});
@@ -40,11 +39,11 @@ angular.module('playalong.services')
 			var deferred = $q.defer();
 			//TODO - validate operator
 			var ref = getRef(relPath);
-			
 			ref
 				.orderByChild(fieldName)[operator](fieldValue)
 				.once('value',function(snapshot) {
 					var res = refFlag ? snapshot : snapshot.val();
+					console.log(res);
 					deferred.resolve(res);
 				});
 
