@@ -12,8 +12,8 @@ angular.module('playalong.services')
     var usersRef = new Firebase(config.paths.firebase +'/users');
     return $firebaseAuth(usersRef);
 }])
-  .factory('login', ['$q','Auth','config', '$firebaseArray', 'customerIoHelper',
-    function ($q,Auth, config,$firebaseArray,customerIoHelper) {
+  .factory('login', ['$q','Auth','config', '$firebaseArray', 'customerIoHelper','$rootScope',
+    function ($q,Auth, config,$firebaseArray,customerIoHelper,$rootScope) {
     
     var userModel,
         authModel;
@@ -78,6 +78,8 @@ angular.module('playalong.services')
       
       //Identify against customerIo
       customerIoHelper.identifyUser(userModel);
+      $rootScope.$broadcast('plyUserLoggedIn');
+
     });
 
     var loginEmail = function(email,password) {
