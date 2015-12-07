@@ -72,13 +72,16 @@ angular.module('playalong.services')
 
             //Append the key to the model
             userModel.userKey = Object.keys(rawData)[0];
+
           }
+          $rootScope.$broadcast('plyUserLoggedIn');
+            
+          //Identify against customerIo
+          customerIoHelper.identifyUser(userModel);
         }); 
       }
       
-      //Identify against customerIo
-      customerIoHelper.identifyUser(userModel);
-      $rootScope.$broadcast('plyUserLoggedIn');
+
 
     });
 
@@ -168,7 +171,7 @@ angular.module('playalong.services')
       isLoggedIn: isLoggedIn,
       logout: logout,
       getFirstName: getFirstName,
-      getLastName: getLastName,
+      getLastName: getLastName, 
       getFullName: getFullName,
       isSuperUser: isSuperUser
     };
