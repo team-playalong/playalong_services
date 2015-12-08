@@ -139,6 +139,7 @@ angular.module('playalong.services')
 
     var logout = function() {
       Auth.$unauth();
+      $rootScope.$broadcast('plyUserLoggedOut');
     };
       
     var getAuth = function() {
