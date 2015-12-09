@@ -8,11 +8,18 @@
  * Controller of the gitHubApp
  */
 angular.module('playalong.services')
-  .controller('MainCtrl',['$scope','config','$http', 'chords','login','user',
- function ($scope,config,$http,chords,login,user) {
+.config(function($sceProvider) {
+  // Completely disable SCE.  For demonstration purposes only!
+  // Do not use in new projects.
+  $sceProvider.enabled(false);
+})
+.controller('MainCtrl',['$scope','config','$http', 'chords','login','user','transposer',
+ function ($scope,config,$http,chords,login,user,transposer) {
     $scope.login = login;
+    $scope.transposer = transposer;
     $scope.chordRef = null;
     $scope.test = 'ltr';
+
   	$scope.addChord = function() {
   		$http.get(config.paths.mocks.hebrewChord)
 	    .success(function(response) {
@@ -53,12 +60,13 @@ angular.module('playalong.services')
     };
 
   	$scope.getChordById = function() {
-  		var result = chords.getChordById('-JxLKLUR8irZN0TA__XK');
+  		var result = chords.getChordById('-JyRhFHl-hNKfoYakcvb');
       if (result)
       {
         result.$bindTo($scope, "newChord");
       }
   	};
+    $scope.getChordById();
 
     $scope.searchBy = 'artist';
     $scope.searchChord = function(searchBy, searchText) {
@@ -88,15 +96,19 @@ angular.module('playalong.services')
       });
     };
 
-    $scope.getTopChords = function(limitTo) {
-      chords.getTopChords(limitTo)
-      .then(function(data) {
-        $scope.topChords = data;
-      })
-      .catch(function(error) {
-        console.error(error);
+    setTimeout(function() {
+
+      var chords = angular.element(document.querySelector('.transposeArea .chord'));
+      
+      angular.forEach(chords, function(value){
+        var oldText = angular.element(value).text();
+        console.log(oldText);
+        var newText = transposer.transpose(oldText,3);
+        console.log(newText);
+        angular.element(value).text(newText);
       });
-    };
+    },3000);
+
 
     $scope.rateChord = function() {
       chords.rateChord('-JxLKLUR8irZN0TA__XK',1)
@@ -113,4 +125,6 @@ angular.module('playalong.services')
         console.warn(data.message);
       });
     };
+
+  
   }]);

@@ -42,6 +42,12 @@ describe('Service: transposer', function () {
 
     res = transposer.transpose('A#',-3);
     expect(res).toBe('G');
+
+    res = transposer.transpose('Gm',-3);
+    expect(res).toBe('Em');
+
+    res = transposer.transpose('Gm',1);
+    expect(res).toBe('G#m');
   });
 
   

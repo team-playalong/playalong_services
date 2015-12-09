@@ -65,13 +65,18 @@ angular.module('playalong.services')
 		'Db': 'C#',
 		'D#': 'Eb'
 	})
-  .service('transposer', ['ChordTranposeMap','EqualChordsMap',
-  	function (ChordTranposeMap,EqualChordsMap) {
+  .service('transposer', ['ChordTranposeMap','EqualChordsMap','RegexStore',
+  	function (ChordTranposeMap,EqualChordsMap,RegexStore) {
 		var getEqualChord = function(chord) {
 			return EqualChordsMap[chord] || chord;
 		};
 
   	var transpose = function(chord,numTones) {
+  		var oldChord = angular.copy(chord);
+  		var chordRegex = RegexStore.get('basicChord');
+  		//Extract what needs to be transposed
+  		chord = chord.match(chordRegex);
+
   		if (!chord || !numTones || typeof numTones !== 'number')
   		{
   			return null;
@@ -91,7 +96,7 @@ angular.module('playalong.services')
   			
   		}
 
-  		return chord;
+  		return oldChord.replace(RegexStore.get('basicChord'),chord);
 
   	};
   	return {

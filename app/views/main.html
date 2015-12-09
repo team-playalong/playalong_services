@@ -2,7 +2,11 @@
   <div class="form-group">
     <button class="btn btn-md" ng-click="addChord()">Add Chord</button>  
   </div>
-  <pre>{{newChord | json}}</pre>  
+  <!-- <pre>{{newChord | json}}</pre>   -->
+  <div class="form-group">
+    <div class="transposeArea" ng-bind-html="newChord.content"></div>
+    <button class="btn" ng-click="transposeTheText();">Transpose Text</button>  
+  </div>
   <textarea ng-model="newChord.artist" auto-direction auto-direction-scope-var="test"></textarea>
   <div class="form-group">
   	<label>Chord id</label>
@@ -81,5 +85,7 @@
     <div class="control-label">Rate Chord</div>
     <button class="btn btn-primary" ng-click="rateChord()">Click to rate</button>
   </div>
-    
+  <br><br>
+  
+  
 </div>
