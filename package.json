@@ -1,5 +1,6 @@
 {
-  "name": "github",
+  "name": "playalong-services",
+  "version": "0.0.1",
   "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -39,5 +40,21 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "description": "run   > npm install > bower install",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://atardadi_@bitbucket.org/playalong/playalong_services.git"
+  },
+  "keywords": [
+    "playalong"
+  ],
+  "author": "Dadi Atar",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/playalong/playalong_services#readme"
 }
