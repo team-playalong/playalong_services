@@ -13,7 +13,7 @@ describe('Service: Auth', function () {
       
   beforeEach(inject(function (_Auth_,_login_,_$rootScope_,_$httpBackend_) {
     $httpBackend = _$httpBackend_;
-    $httpBackend.whenGET('/locales/en.json').respond();
+    $httpBackend.whenGET(/locales\/en.json/).respond();
     Auth = _Auth_;
     login = _login_;
 

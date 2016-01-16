@@ -28,9 +28,7 @@ describe('Service: chords', function () {
     chords = _chords_;
     $rootScope = _$rootScope_;
     $httpBackend = _$httpBackend_;
-    $httpBackend.whenGET('/locales/en.json').respond(function() {
-      console.log('obj');
-    });
+    $httpBackend.whenGET(/locales\/en.json/).respond();
     $rootScope.$apply();
   }));
 

@@ -3,8 +3,14 @@
 
 angular.module('playalong.services')
 .config(function($translateProvider) {
+  var localesPrefix = '/locales/';
+  if (PLY_CONFIG.env === 'dev')
+  {
+    localesPrefix = '/bower_components/playalong.services/dist/locales/';
+  }
+  
   $translateProvider.useStaticFilesLoader({
-      prefix: '/locales/',
+      prefix: localesPrefix,
       suffix: '.json'
   });
   $translateProvider.useSanitizeValueStrategy('sanitize');
