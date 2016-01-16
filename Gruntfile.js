@@ -403,6 +403,8 @@ module.exports = function (grunt) {
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*',
 
+            //Dadi's changes
+            'locales/*.json',
             'env.js'
           ]
         }, {
