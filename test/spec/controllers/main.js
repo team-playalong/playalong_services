@@ -7,13 +7,15 @@ describe('Controller: MainCtrl', function () {
 
   var MainCtrl,
       $rootScope,
-      scope;
+      scope,
+      $httpBackend;
 
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, _$rootScope_) {
+  beforeEach(inject(function ($controller, _$rootScope_,_$httpBackend_) {
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
     MainCtrl = $controller('MainCtrl', {
       $scope: scope
     });

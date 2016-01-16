@@ -14,6 +14,7 @@ describe('Service: chords', function () {
           }
         };
       },
+      $httpBackend,
       $rootScope;
 
   beforeEach(function() {
@@ -23,9 +24,13 @@ describe('Service: chords', function () {
   
   });
   
-  beforeEach(inject(function (_chords_,_$rootScope_) {
+  beforeEach(inject(function (_chords_,_$rootScope_,_$httpBackend_) {
     chords = _chords_;
     $rootScope = _$rootScope_;
+    $httpBackend = _$httpBackend_;
+    $httpBackend.whenGET('/locales/en.json').respond(function() {
+      console.log('obj');
+    });
     $rootScope.$apply();
   }));
 

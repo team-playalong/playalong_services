@@ -6,9 +6,12 @@ describe('Directive: autoDirection', function () {
   beforeEach(module('playalong.services'));
 
   var element,
-    scope;
+      $httpBackend,
+      scope;
 
-  beforeEach(inject(function ($rootScope) {
+  beforeEach(inject(function ($rootScope,_$httpBackend_) {
+    $httpBackend = _$httpBackend_;
+    $httpBackend.whenGET('/locales/en.json').respond();
     scope = $rootScope.$new();
   }));
 

@@ -9,4 +9,8 @@
  * Main module of the application.
  */
 angular
-  .module('playalong.services', ['firebase']);
+  .module('playalong.services', [
+  	'firebase',
+  	'ngSanitize',
+  	'pascalprecht.translate'
+]);

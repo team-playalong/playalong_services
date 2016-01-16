@@ -8,8 +8,12 @@ describe('Service: Auth', function () {
   // instantiate service
   var Auth,
       login,
+      $httpBackend,
       $rootScope;
-  beforeEach(inject(function (_Auth_,_login_,_$rootScope_) {
+      
+  beforeEach(inject(function (_Auth_,_login_,_$rootScope_,_$httpBackend_) {
+    $httpBackend = _$httpBackend_;
+    $httpBackend.whenGET('/locales/en.json').respond();
     Auth = _Auth_;
     login = _login_;
 
