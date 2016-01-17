@@ -20,7 +20,8 @@
 		"menu": {
 			"SEARCH": "Search",
 			"CHORD_BUILDER": "Chord Builder",
-			"FAVORITES": "Favorites"
+			"FAVORITES": "Favorites",
+			"TUNER": "Guitar Tuner"
 		}
 	},
 	"home": {
@@ -50,7 +51,11 @@
 		"ADDED_MESSAGE": "Song added to favorites",
 		"REMOVE_MESSAGE": "Remove from favorites",
 		"ADD_MESSAGE": "Add to favorites"
-
+	},
+	"tuner": {
+		"PAGE_TITLE": "Guitar Tuner",
+		"LOGIN_TITLE": "Please login in order to use the tuner",
+		"TITLE": "Tuner"
 	},
 	"chord": {
 		"RATE_MESSAGE": "Was I Any Good? Rate me!",

@@ -25,7 +25,8 @@
 		"menu": {
 			"SEARCH": "חיפוש",
 			"CHORD_BUILDER": "בונה אקורדים",
-			"FAVORITES": "מועדפים"
+			"FAVORITES": "מועדפים",
+			"TUNER": "טיונר"
 		}
 	},
 	"home": {
