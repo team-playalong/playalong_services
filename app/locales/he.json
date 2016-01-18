@@ -57,6 +57,11 @@
 		"REMOVE_MESSAGE": "הסר ממועדפים",
 		"ADD_MESSAGE": "הוסף למועדפים"
 	},
+	"tuner": {
+		"PAGE_TITLE": "Guitar Tuner",
+		"LOGIN_TITLE": "Please login in order to use the tuner",
+		"TITLE": "טיונר"
+	},
 	"chord": {
 		"RATE_MESSAGE": "הייתי טוב? דרג אותי!",
 		"EDIT_CHORD": "ערוך אקורד",
