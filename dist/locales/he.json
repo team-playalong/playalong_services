@@ -26,7 +26,8 @@
 			"SEARCH": "חיפוש",
 			"CHORD_BUILDER": "בונה אקורדים",
 			"FAVORITES": "מועדפים",
-			"TUNER": "טיונר"
+			"TUNER": "טיונר",
+			"METRONOME": "מטרונום"
 		}
 	},
 	"home": {
@@ -56,6 +57,11 @@
 		"ADDED_MESSAGE": "השיר נוסף למועדפים",
 		"REMOVE_MESSAGE": "הסר ממועדפים",
 		"ADD_MESSAGE": "הוסף למועדפים"
+	},
+	"tuner": {
+		"PAGE_TITLE": "Guitar Tuner",
+		"LOGIN_TITLE": "Please login in order to use the tuner",
+		"TITLE": "טיונר"
 	},
 	"chord": {
 		"RATE_MESSAGE": "הייתי טוב? דרג אותי!",
