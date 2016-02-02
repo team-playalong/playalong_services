@@ -87,6 +87,7 @@
 		},
 		"ARTIST": "Artist",
 		"TITLE": "Title",
+		"YOUTUBE": "Youtube Link",
 		"APPROVED": "Approved?",
 		"CREATE": "Create Chord",
 		"GO_TO_CHORD": "See Chord In Action",
