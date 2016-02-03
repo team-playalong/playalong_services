@@ -40,6 +40,8 @@
 		"EMPTY_RESULT_MESSAGE": "אין תוצאות לחיפוש. נסה שוב...",
 		"SONG_NAME": "שם השיר" ,
 		"ARTIST": "אמן",
+		"YOUTUBE": "Youtube ID",
+		"ARTIST_IMAGE": "תמונת אומן",
 		"SEARCH_BOTTON": "חפש",
 		"REQUEST_SONG": "ספר לנו איזה שיר אתה רוצה ",
 		"HERE": "כאן"
