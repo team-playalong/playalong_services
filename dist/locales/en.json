@@ -80,10 +80,10 @@
 	},
 	"builder": {
 		"invite": {
-			"TITLE": "Want To Create and Edit Chords?",
-			"CONTACT_US": "Contact us ",
-			"HERE": "HERE",
-			"SUPERUSER": "If you're already a superuser, simply login..."
+			"TITLE": "Login to Build Chords",
+			"CONTACT_US": "",
+			"HERE": "",
+			"SUPERUSER": ""
 		},
 		"ARTIST": "Artist",
 		"TITLE": "Title",
