@@ -47,6 +47,7 @@
 	"favorites": {
 		"PAGE_TITLE": "Favorites",
 		"LOGIN_TITLE": "Please Login...",
+		"NO_FAVORITES": "You have no favorites. How 'bout adding some of your songs?",
 		"TITLE": "Your Favorites",
 		"REMOVED_MESSAGE": "Song removed from favorites",
 		"ADDED_MESSAGE": "Song added to favorites",
