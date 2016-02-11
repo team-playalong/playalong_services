@@ -57,6 +57,7 @@
 		"PAGE_TITLE": "מועדפים",
 		"LOGIN_TITLE": "אינך מחובר...",
 		"TITLE": "המועדפים שלך",
+		"NO_FAVORITES": "אין שירים במועדפים. אולי תוסיף כמה?",
 		"REMOVED_MESSAGE": "השיר הוסר מהמועדפים",
 		"ADDED_MESSAGE": "השיר נוסף למועדפים",
 		"REMOVE_MESSAGE": "הסר ממועדפים",
@@ -86,10 +87,10 @@
 	},
 	"builder": {
 		"invite": {
-			"TITLE": "רוצה לבנות ולערוך אקורדים?",
-			"CONTACT_US": "צור קשר ",
-			"HERE": "כאן",
-			"SUPERUSER": "אם יש לך כבר הרשאות, פשוט התחבר..."
+			"TITLE": "התחבר כדי ליצור אקורדים",
+			"CONTACT_US": "",
+			"HERE": "",
+			"SUPERUSER": ""
 		},
 		"ARTIST": "אמן",
 		"TITLE": "שם השיר",
