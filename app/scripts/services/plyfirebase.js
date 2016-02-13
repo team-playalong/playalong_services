@@ -57,7 +57,11 @@ angular.module('playalong.services')
 				.then(function(data) {
 					if (data && data.ref())
 					{
-						data.ref().remove();
+						if (data.hasChildren()) {
+							data.forEach(function(childRef) {
+								childRef.ref().remove();
+							});
+						}
 						deferred.resolve({
 							message: 'success'
 						});

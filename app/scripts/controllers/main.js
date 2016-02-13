@@ -40,12 +40,12 @@ angular.module('playalong.services')
       chords.increaseChordHitCount(chord.chordKey);
     };
 
-
+    $scope.isAddFlag = false;
     $scope.addToFavorites = function() {
       var userModel = login.getUser();
       var params = {
         userKey: userModel.userKey,
-        isAddFlag: true,
+        isAddFlag: $scope.isAddFlag,
         chordObj: {
           chordKey: '-JxLKLUR8irZN0TA__XK',
           artist: 'Asaf Avidan',
