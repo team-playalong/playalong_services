@@ -4,13 +4,18 @@
 angular.module('playalong.services')
 .config(['$translateProvider','config',function($translateProvider,config) {
   var lang = PLY_CONFIG.defaultLocale || 'en';
-  $translateProvider.useUrlLoader(config.paths.firebase + 'i18n/' + lang + '.json');
-    
+  $translateProvider
+    .preferredLanguage('en')
+    .useStaticFilesLoader({
+      prefix: config.paths.firebase + 'i18n/',
+      suffix: '.json'
+    });
+      
   $translateProvider.useSanitizeValueStrategy('sanitize');
   // match the default locale from the build task
   $translateProvider.preferredLanguage(lang);
 }])
-.run(['$location', '$translate', 
+.run(['$location', '$translate',
     function($location, $translate) {
   // check if url contains a certain locale or set back to your default locale
   var locale = $location.search().locale;
