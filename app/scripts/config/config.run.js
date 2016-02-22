@@ -2,21 +2,14 @@
 //Angular-Translate
 
 angular.module('playalong.services')
-.config(function($translateProvider) {
-  var localesPrefix = '/locales/';
-  if (PLY_CONFIG.env === 'dev')
-  {
-    localesPrefix = '/bower_components/playalong.services/dist/locales/';
-  }
-  
-  $translateProvider.useStaticFilesLoader({
-      prefix: localesPrefix,
-      suffix: '.json'
-  });
+.config(['$translateProvider','config',function($translateProvider,config) {
+  var lang = PLY_CONFIG.defaultLocale || 'en';
+  $translateProvider.useUrlLoader(config.paths.firebase + 'i18n/' + lang + '.json');
+    
   $translateProvider.useSanitizeValueStrategy('sanitize');
   // match the default locale from the build task
-  $translateProvider.preferredLanguage(PLY_CONFIG.defaultLocale || 'en');
-})
+  $translateProvider.preferredLanguage(lang);
+}])
 .run(['$location', '$translate', 
     function($location, $translate) {
   // check if url contains a certain locale or set back to your default locale
