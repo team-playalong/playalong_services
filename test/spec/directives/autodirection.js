@@ -11,7 +11,7 @@ describe('Directive: autoDirection', function () {
 
   beforeEach(inject(function ($rootScope,_$httpBackend_) {
     $httpBackend = _$httpBackend_;
-    $httpBackend.whenGET(/locales\/en.json/).respond();
+    $httpBackend.whenGET(/i18n/).respond();
     scope = $rootScope.$new();
   }));
 
