@@ -78,6 +78,17 @@ angular.module('playalong.services')
             
           //Identify against customerIo
           customerIoHelper.identifyUser(userModel);
+          if (!!window.mixpanel) {
+            mixpanel.identify(userModel.uid);
+            mixpanel.people.set({
+                "$email": userModel.email,    // only special properties need the $
+                "$created": userModel.creationDate || new Date(),
+                "$last_login": new Date(),
+                "firstName": userModel.firstName || '',       // Add any attributes you'd like to use in the email subject or body.
+                "lastName": userModel.lastName || '',
+                "userType": userModel.userType || 'normal' 
+            });
+          }
         }); 
       }
       
