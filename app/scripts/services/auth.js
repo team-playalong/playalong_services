@@ -79,8 +79,8 @@ angular.module('playalong.services')
           //Identify against customerIo
           customerIoHelper.identifyUser(userModel);
           if (!!window.mixpanel) {
-            mixpanel.identify(userModel.uid);
-            mixpanel.people.set({
+            window.mixpanel.identify(userModel.uid);
+            window.mixpanel.people.set({
                 "$email": userModel.email,    // only special properties need the $
                 "$created": userModel.creationDate || new Date(),
                 "$last_login": new Date(),
@@ -88,6 +88,7 @@ angular.module('playalong.services')
                 "lastName": userModel.lastName || '',
                 "userType": userModel.userType || 'normal' 
             });
+            window.mixpanel.track("ply_user_login");  
           }
         }); 
       }
