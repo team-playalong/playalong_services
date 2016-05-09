@@ -38,6 +38,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      ts: {
+        files: ['<%= yeoman.app %>/**/*.ts'],
+        tasks: ['ts']
+      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -448,7 +452,14 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
+
+    ts: {
+      default: {
+        // specifying tsconfig as a boolean will use the 'tsconfig.json' in same folder as Gruntfile.js 
+        tsconfig: true
+      }
+    },
   });
 
 

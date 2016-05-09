@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * @ngdoc overview
  * @name gitHubApp
@@ -9,8 +8,10 @@
  * Main module of the application.
  */
 angular
-  .module('playalong.services', [
-  	'firebase',
-  	'ngSanitize',
-  	'pascalprecht.translate'
+    .module('playalong.services', [
+    'firebase',
+    'ngSanitize',
+    'pascalprecht.translate',
+    'LocalStorageModule',
 ]);
+//# sourceMappingURL=app.js.map
