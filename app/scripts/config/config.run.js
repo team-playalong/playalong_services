@@ -7,7 +7,7 @@ angular.module('playalong.services')
             .addInterpolation('$translateMessageFormatInterpolation')
             .useSanitizeValueStrategy('sanitize')
             .useStaticFilesLoader({
-            prefix: config.paths.firebase + 'i18n/',
+            prefix: config.paths.firebaseProd + 'i18n/',
             suffix: '.json'
         })
             .preferredLanguage(lang);

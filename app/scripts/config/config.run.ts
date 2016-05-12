@@ -8,13 +8,13 @@ angular.module('playalong.services')
     .addInterpolation('$translateMessageFormatInterpolation')
     .useSanitizeValueStrategy('sanitize')
     .useStaticFilesLoader({
-      prefix: config.paths.firebase + 'i18n/',
+      prefix: config.paths.firebaseProd + 'i18n/',
       suffix: '.json'
     })
     .preferredLanguage(lang);  
 }])
 .run(['$location', '$translate', 'PlyStorage',
-    function($location, $translate,PlyStorage) {
+    function($location, $translate, PlyStorage) {
   //Check if storage contains locale
   let storageLocale = PlyStorage.get('locale');
   if (storageLocale) {
@@ -32,7 +32,7 @@ angular.module('playalong.services')
 }])
 
 //Global config object
-.run(['$rootScope','$translate',function ($rootScope,$translate) {
+.run(['$rootScope','$translate', function ($rootScope,$translate) {
   var dir = $translate.proposedLanguage() === 'he' ? 'rtl' : 'ltr';
   var locale = $translate.use() || $translate.proposedLanguage();
 
