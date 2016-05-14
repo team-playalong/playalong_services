@@ -9,7 +9,7 @@
    * Factory in the playalongServicesApp.
    */
    angular.module('playalong.services')
-   .factory("Auth", ['$firebaseAuth','config',function($firebaseAuth,config) {
+   .factory('Auth', ['$firebaseAuth','config',function($firebaseAuth,config) {
     var usersRef = new Firebase(config.paths.firebase +'/users');
     return $firebaseAuth(usersRef);
   }])
@@ -28,7 +28,7 @@
           authModel = authData;
           //Check if user is signed up
           var usersRef = new Firebase(config.paths.firebase +'/users');
-          usersRef.orderByChild("uid").equalTo(authData.uid).on("value", function(snapshot) {
+          usersRef.orderByChild('uid').equalTo(authData.uid).on('value', function(snapshot) {
             var rawData = snapshot.val();
 
             if (!rawData) {
@@ -82,20 +82,20 @@
             if (!!window.mixpanel) {
               window.mixpanel.identify(userModel.uid);
               window.mixpanel.people.set({
-                  "$email": userModel.email,    // only special properties need the $
-                  "$created": userModel.creationDate || new Date(),
-                  "$last_login": new Date(),
-                  "firstName": userModel.firstName || '',       // Add any attributes you'd like to use in the email subject or body.
-                  "lastName": userModel.lastName || '',
-                  "userType": userModel.userType || 'normal' 
+                  '$email': userModel.email,    // only special properties need the $
+                  '$created': userModel.creationDate || new Date(),
+                  '$last_login': new Date(),
+                  'firstName': userModel.firstName || '',       // Add any attributes you'd like to use in the email subject or body.
+                  'lastName': userModel.lastName || '',
+                  'userType': userModel.userType || 'normal' 
                 });
-              window.mixpanel.track("ply_user_login");  
+              window.mixpanel.track('ply_user_login');  
             }
           }); 
         }
       });
 
-      var loginEmail = function(email,password) {
+      function loginEmail(email, password) {
         var deferred = $q.defer();
 
         var ref = new Firebase(config.paths.firebase);
@@ -104,7 +104,7 @@
           password : password
         }, function(error, userData) {
           if (error) {
-            console.log("Error creating user:", error);
+            console.log('Error creating user:', error);
             deferred.reject(error);
           } else {
             deferred.resolve(userData);
@@ -112,9 +112,9 @@
         });
 
         return deferred.promise;
-      };
+      }
 
-      var loginSocial = function(platform) {
+      function loginSocial(platform) {
         var deferred = $q.defer();
 
         var scope = {
@@ -125,7 +125,7 @@
               // User successfully logged in
               deferred.resolve(authData);
             }).catch(function(error) {
-              if (error.code === "TRANSPORT_UNAVAILABLE") {
+              if (error.code === 'TRANSPORT_UNAVAILABLE') {
                 Auth.$authWithOAuthRedirect(platform).then(function(authData) {
                   deferred.resolve(authData);
                 });
@@ -137,7 +137,7 @@
         });
 
             return deferred.promise;
-          };
+          }
 
           var getUser = function() {
             return userModel; 
@@ -188,6 +188,22 @@
             });
           }
 
+          function resetPassword(email: string) {
+            return new Promise((resolve, reject) => {
+              let ref = new Firebase(config.paths.firebase);
+              ref.resetPassword({
+                email,
+              }, function(error) {
+                if (error === null) {
+                  console.log(`Reset password sent to ${email}`);
+                  resolve();
+                } else {
+                  reject(error);
+                }
+              });
+            });  
+
+          }
           return {
             loginSocial,
             loginEmail,
@@ -200,6 +216,7 @@
             getFullName,
             isSuperUser,
             createUser,
+            resetPassword,
           };
         }]);  
 })();
