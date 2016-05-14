@@ -494,6 +494,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ts',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
