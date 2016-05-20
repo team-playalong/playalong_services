@@ -1,14 +1,48 @@
 (function () {
     'use strict';
+    function PlyFirebase() {
+        // Initialize Firebase
+        var config;
+        if (PLY_CONFIG.env === 'dev') {
+            config = {
+                apiKey: 'AIzaSyApdtKEld9C-Hbkr62_o4tOPeZl_qiFfTY',
+                authDomain: 'playalong.firebaseapp.com',
+                databaseURL: 'https://playalong.firebaseio.com',
+                storageBucket: 'project-7489461719706903474.appspot.com',
+            };
+        }
+        else {
+            config = {
+                apiKey: 'AIzaSyAxl5nYfqR_RQPKD0QI_94PWBhpu0C0Q3M',
+                authDomain: 'playalong-prod.firebaseapp.com',
+                databaseURL: 'https://playalong-prod.firebaseio.com',
+                storageBucket: 'playalong-prod.appspot.com',
+            };
+        }
+        firebase.initializeApp(config);
+        var getRef = function (path) { return firebase.database().ref(path); };
+        return {
+            auth: firebase.auth(),
+            googleProvider: new firebase.auth.GoogleAuthProvider(),
+            facebookProvider: new firebase.auth.FacebookAuthProvider(),
+            getRef: getRef
+        };
+    }
     Auth.$inject = ['$firebaseAuth', 'config'];
     function Auth($firebaseAuth, config) {
         var usersRef = new Firebase(config.paths.firebase + '/users');
         return $firebaseAuth(usersRef);
     }
-    login.$inject = ['$q', 'Auth', 'config', '$firebaseArray', 'customerIoHelper', '$rootScope'];
-    function login($q, Auth, config, $firebaseArray, customerIoHelper, $rootScope) {
-        var userModel, authModel;
-        Auth.$onAuth(function (authData) {
+    login.$inject = ['$q', 'Auth', 'config', '$firebaseArray', 'customerIoHelper', '$rootScope', 'PlyFirebase'];
+    function login($q, Auth, config, $firebaseArray, customerIoHelper, $rootScope, PlyFirebase) {
+        var userModel;
+        var authModel;
+        function getProviderData() {
+            if (authModel && authModel.providerData && authModel.providerData.length) {
+                return authModel.providerData[0];
+            }
+        }
+        PlyFirebase.auth.onAuthStateChanged(function (authData) {
             if (authData === null) {
                 userModel = null;
                 authModel = null;
@@ -16,32 +50,29 @@
             else {
                 authModel = authData;
                 //Check if user is signed up
-                var usersRef = new Firebase(config.paths.firebase + '/users');
+                var usersRef = PlyFirebase.getRef('users');
                 usersRef.orderByChild('uid').equalTo(authData.uid).on('value', function (snapshot) {
                     var rawData = snapshot.val();
                     if (!rawData) {
                         //Add it
-                        var email, firstName, lastName;
-                        switch (authData.auth.provider) {
-                            case 'facebook':
-                                email = authData.facebook.email;
-                                firstName = authData.facebook.cachedUserProfile.first_name;
-                                lastName = authData.facebook.cachedUserProfile.last_name;
+                        var email, firstName, lastName, fullName;
+                        var providerData = getProviderData();
+                        switch (providerData.providerId) {
+                            case 'google.com':
+                            case 'facebook.com':
+                                email = providerData.email;
+                                fullName = providerData.displayName.split(' ');
+                                firstName = fullName[0];
+                                lastName = fullName[1];
                                 break;
                             case 'password':
-                                email = authData.password.email;
+                                email = providerData.email;
                                 firstName = '';
                                 lastName = '';
-                                break;
-                            case 'google':
-                                email = authData.google.email;
-                                firstName = authData.google.cachedUserProfile.given_name;
-                                lastName = authData.google.cachedUserProfile.family_name;
                                 break;
                             default:
                                 break;
                         }
-                        var usersData = $firebaseArray(usersRef);
                         userModel = {
                             //TODO - Validations and extract by platform
                             uid: authData.uid,
@@ -51,7 +82,7 @@
                             userType: 'normal',
                             creationDate: new Date().getTime() / 1000
                         };
-                        usersData.$add(userModel);
+                        usersRef.push(userModel);
                     }
                     else {
                         userModel = rawData[Object.keys(rawData)[0]];
@@ -77,97 +108,67 @@
             }
         });
         function loginEmail(email, password) {
-            var deferred = $q.defer();
-            var ref = new Firebase(config.paths.firebase);
-            ref.authWithPassword({
-                email: email,
-                password: password
-            }, function (error, userData) {
-                if (error) {
-                    console.log('Error creating user:', error);
-                    deferred.reject(error);
-                }
-                else {
-                    deferred.resolve(userData);
-                }
+            return new Promise(function (resolve, reject) {
+                PlyFirebase.auth.signInWithEmailAndPassword(email, password)
+                    .then(function (userData) { return resolve(userData); })
+                    .catch(function (error) { return reject(error); });
             });
-            return deferred.promise;
         }
         function loginSocial(platform) {
-            var deferred = $q.defer();
-            var scope = {
-                scope: 'email' //Needed permissions
-            };
-            Auth.$authWithOAuthPopup(platform, scope).then(function (authData) {
-                // User successfully logged in
-                deferred.resolve(authData);
-            }).catch(function (error) {
-                if (error.code === 'TRANSPORT_UNAVAILABLE') {
-                    Auth.$authWithOAuthRedirect(platform).then(function (authData) {
-                        deferred.resolve(authData);
-                    });
+            return new Promise(function (resolve, reject) {
+                var provider;
+                switch (platform) {
+                    case 'facebook':
+                        provider = PlyFirebase.facebookProvider;
+                        break;
+                    case 'google':
+                        provider = PlyFirebase.googleProvider;
+                        break;
+                    default:
+                        provider = PlyFirebase.googleProvider;
+                        break;
                 }
-                else {
-                    // Another error occurred
-                    console.log(error);
-                    deferred.reject(error);
-                }
+                provider.addScope('email');
+                PlyFirebase.auth.signInWithPopup(provider)
+                    .then(function (authData) {
+                    // User successfully logged in
+                    userModel = authData.user;
+                    resolve(authData);
+                })
+                    .catch(function (error) { return reject(error); });
             });
-            return deferred.promise;
         }
-        var getUser = function () {
-            return userModel;
-        };
-        var isLoggedIn = function () {
-            return !!userModel;
-        };
-        var logout = function () {
-            Auth.$unauth();
-            $rootScope.$broadcast('plyUserLoggedOut');
-        };
-        var getAuth = function () {
-            return authModel;
-        };
-        var getFullName = function () {
-            return this.getFirstName() + ' ' + this.getLastName();
-        };
-        var getLastName = function () {
-            return userModel ? userModel.lastName : '';
-        };
-        var getFirstName = function () {
-            return userModel ? userModel.firstName : '';
-        };
-        var isSuperUser = function () {
-            return this.getUser() && this.getUser().userType &&
+        var getUser = function () { return userModel; };
+        var isLoggedIn = function () { return !!userModel; };
+        function logout() {
+            PlyFirebase.signOut()
+                .then(function () { return $rootScope.$broadcast('plyUserLoggedOut'); });
+        }
+        ;
+        var getAuth = function () { return authModel; };
+        var getFullName = function () { return getFirstName() + ' ' + getLastName(); };
+        var getLastName = function () { return userModel ? userModel.lastName : ''; };
+        var getFirstName = function () { return userModel ? userModel.firstName : ''; };
+        function isSuperUser() {
+            return getUser() && getUser().userType &&
                 (this.getUser().userType.indexOf('superuser') !== -1 || this.getUser().userType.indexOf('admin') !== -1);
-        };
+        }
+        ;
         function createUser(email, password) {
             return new Promise(function (resolve, reject) {
-                var ref = new Firebase(config.paths.firebase);
-                ref.createUser({ email: email, password: password }, function (error, userData) {
-                    if (error) {
-                        reject(error);
-                    }
-                    else {
-                        resolve(userData);
-                    }
-                });
+                PlyFirebase.auth.createUserWithEmailAndPassword(email, password)
+                    .then(function (userData) { return resolve(userData); })
+                    .catch(function (error) { return reject(error); });
             });
         }
         function resetPassword(email) {
             return new Promise(function (resolve, reject) {
-                var ref = new Firebase(config.paths.firebase);
-                ref.resetPassword({
-                    email: email,
-                }, function (error) {
-                    if (error === null) {
-                        console.log("Reset password sent to " + email);
-                        resolve();
-                    }
-                    else {
-                        reject(error);
-                    }
-                });
+                PlyFirebase.auth.sendPasswordResetEmail(email)
+                    .then(function () {
+                    console.log("Reset password sent to " + email);
+                    resolve();
+                })
+                    .catch(function (error) { return reject(error); });
             });
         }
         function changePassword(email, oldPassword, newPassword) {
@@ -203,6 +204,7 @@
     }
     angular.module('playalong.services')
         .factory('Auth', Auth)
-        .factory('login', login);
+        .factory('login', login)
+        .service('PlyFirebase', PlyFirebase);
 })();
 //# sourceMappingURL=auth.js.map
