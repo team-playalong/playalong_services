@@ -6,4 +6,5 @@ declare var firebase: any;
 
 interface Window {
 	mixpanel: any;
+	_cio: any;
 }

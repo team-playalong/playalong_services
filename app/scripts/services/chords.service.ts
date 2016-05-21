@@ -1,25 +1,22 @@
-'use strict';
+(function() {
+  'use strict';
 
-/**
- * @ngdoc service
- * @name gitHubApp.chords
- * @description
- * # chords
- * Factory in the gitHubApp.
- */
-angular.module('playalong.services')
-  .factory('chords',['config','$firebaseArray','$q', '$firebaseObject',function (config,$firebaseArray,$q,$firebaseObject) {
-    var ref = new Firebase(config.paths.firebase + 'chords');
-    var chordsData = $firebaseArray(ref);
+  chords.$inject = ['config', '$q', 'PlyFirebase'];
+  function chords(config, $q: ng.IQService, PlyFirebase) {
+    const chordsRef = PlyFirebase.getRef('chords');
+    // var chordsData = $firebaseArray(ref);
 
-    function increaseChordHitCount(chordKey) {
-      
-      var localRef = new Firebase(ref + '/' + chordKey);
-      localRef.orderByChild("hitCount").once("value", function(snapshot) {
-        localRef.child('hitCount').set((snapshot.val().hitCount || 0 )+1);
-      }); 
-
-
+    function increaseChordHitCount(chordKey: string) {
+      return new Promise((resolve, reject) => {
+        const localRef = chordsRef.child(chordKey);
+        localRef.orderByChild('hitCount').once('value')
+          .then((snapshot) => {
+            const oldHitCount = snapshot.val().hitCount || 0;
+            localRef.update({ hitCount: oldHitCount + 1 });
+            resolve();
+          })
+          .catch(error => reject(error));
+      });
     }
 
     function extractApprovedChords(rawData) {
@@ -36,34 +33,34 @@ angular.module('playalong.services')
       return result;
     }
 
-    function addChord(chordObj) {
-      //TODO validate data        
+    // function addChord(chordObj) {
+    //   //TODO validate data        
       
-      //initialize data
-      chordObj.hitCount = 0;
-      chordObj.rating = 1;
-      chordObj.countRating = 0;
+    //   //initialize data
+    //   chordObj.hitCount = 0;
+    //   chordObj.rating = 1;
+    //   chordObj.countRating = 0;
 
-      var request = chordsData.$add(chordObj)
-      .then(function(ref) {
-        return $firebaseObject(ref);
-      });
+    //   var request = chordsData.$add(chordObj)
+    //   .then(function(ref) {
+    //     return $firebaseObject(ref);
+    //   });
 
-      return request;
-    }
+    //   return request;
+    // }
 
-    function getChordById(chordId) {
-      return $firebaseObject(ref.child(chordId));
+    function getChordById(chordId: string) {
+      return chordsRef.child(chordId);
     }
 
     function searchChordsBy(searchBy, searchText) {
       var deferred = $q.defer();
 
       //TODO - data validation
-      ref.orderByChild(searchBy)
+      chordsRef.orderByChild(searchBy)
       .startAt(searchText)
       .endAt(searchText+'~')
-      .once("value", function(snapshot) {
+      .once('value', function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
         if (!rawData) {
@@ -80,8 +77,8 @@ angular.module('playalong.services')
       var deferred = $q.defer();
 
       //TODO - data validation
-      ref.orderByChild('hitCount').limitToLast(limitTo)
-      .on("value", function(snapshot) {
+      chordsRef.orderByChild('hitCount').limitToLast(limitTo)
+      .on('value', function(snapshot) {
         //Extract the object
         var rawData = snapshot.val();
         if (!rawData) {
@@ -106,7 +103,7 @@ angular.module('playalong.services')
       {
         deferred.reject('Rating value should be between 1 - 5');
       }
-      var localRef = new Firebase(ref + '/' + chordKey);
+      var localRef = new Firebase(chordsRef + '/' + chordKey);
       localRef.once('value',function(snapshot) {
         var countRating = snapshot.val().countRating || 1;
         var rating = snapshot.val().rating || 1;
@@ -132,11 +129,15 @@ angular.module('playalong.services')
 
     // Public API here
     return {
-      addChord: addChord,
+      // addChord: addChord,
       getChordById: getChordById,
       searchChordsBy: searchChordsBy,
       increaseChordHitCount: increaseChordHitCount,
       getTopChords: getTopChords,
       rateChord: rateChord
     };
-  }]);
+}
+
+  angular.module('playalong.services')
+    .factory('chords', chords);  
+})();

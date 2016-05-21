@@ -1,47 +1,8 @@
 (function() {
   'use strict';
 
-  function PlyFirebase() {
-    
-    // Initialize Firebase
-    let config;
-    if (PLY_CONFIG.env === 'dev') {
-      config = {
-        apiKey: 'AIzaSyApdtKEld9C-Hbkr62_o4tOPeZl_qiFfTY',
-        authDomain: 'playalong.firebaseapp.com',
-        databaseURL: 'https://playalong.firebaseio.com',
-        storageBucket: 'project-7489461719706903474.appspot.com',
-      };
-    }
-    else { //prod
-      config = {
-        apiKey: 'AIzaSyAxl5nYfqR_RQPKD0QI_94PWBhpu0C0Q3M',
-        authDomain: 'playalong-prod.firebaseapp.com',
-        databaseURL: 'https://playalong-prod.firebaseio.com',
-        storageBucket: 'playalong-prod.appspot.com',
-      };
-    }
-        
-    firebase.initializeApp(config);
-
-    let getRef = (path: string) => firebase.database().ref(path);
-
-    return {
-      auth: firebase.auth(),
-      googleProvider: new firebase.auth.GoogleAuthProvider(),
-      facebookProvider: new firebase.auth.FacebookAuthProvider(),
-      getRef
-    };
-  }
-
-  Auth.$inject = ['$firebaseAuth', 'config'];
-  function Auth($firebaseAuth, config) {
-    let usersRef = new Firebase(config.paths.firebase + '/users');
-    return $firebaseAuth(usersRef);
-  }
-
-  login.$inject = ['$q', 'Auth', 'config', '$firebaseArray', 'customerIoHelper', '$rootScope', 'PlyFirebase'];
-  function login($q: ng.IQService, Auth, config, $firebaseArray, customerIoHelper, $rootScope, PlyFirebase) {
+  login.$inject = ['$q', 'config', 'customerIoHelper', '$rootScope', 'PlyFirebase'];
+  function login($q: ng.IQService, config, customerIoHelper, $rootScope, PlyFirebase) {
 
     let userModel;
     let authModel;
@@ -239,7 +200,5 @@
   }  
 
   angular.module('playalong.services')
-    .factory('Auth', Auth)
-    .factory('login', login)
-    .service('PlyFirebase', PlyFirebase);
+    .factory('login', login);
 })();
