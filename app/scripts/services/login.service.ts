@@ -29,7 +29,7 @@
           if (!rawData) {
             //Add it
             let email, firstName, lastName, fullName;
-            const providerData = getProviderData()
+            const providerData = getProviderData();
             switch (providerData.providerId) {
               case 'google.com':
               case 'facebook.com':

@@ -26,7 +26,7 @@
                         .then(function (chord) {
                         $scope.chordRef = chord;
                         //We now have a reference to the entire object
-                        $scope.chordRef.$bindTo($scope, "newChord").then(function () {
+                        $scope.chordRef.$bindTo($scope, 'newChord').then(function () {
                             console.log('binded!');
                         });
                     });
@@ -54,10 +54,10 @@
                 });
             };
             $scope.getChordById = function () {
-                var result = chords.getChordById('-JyRhFHl-hNKfoYakcvb');
-                if (result) {
-                    result.$bindTo($scope, "newChord");
-                }
+                chords.getChordById('-JyRhFHl-hNKfoYakcvb')
+                    .then(function (chord) {
+                    $scope.newChord = chord.val();
+                });
             };
             $scope.getChordById();
             $scope.searchBy = 'artist';

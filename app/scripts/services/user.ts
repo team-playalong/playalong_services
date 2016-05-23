@@ -10,8 +10,8 @@
    */
   /*jshint unused:false*/
   angular.module('playalong.services')
-    .service('user', ['config','plyFirebase','$q','login',
-      function (config,plyFirebase,$q,login) {
+    .service('user', ['config','PlyFirebase','$q','login',
+      function (config, PlyFirebase,$q,login) {
       
       /**
        * [addRemoveFavorites description]
@@ -40,13 +40,13 @@
 
         if (!params.isAddFlag)
         {
-          plyFirebase.removeWithQuery(favoritesRelPath,'chordKey','equalTo',params.chordObj.chordKey)
+          PlyFirebase.removeWithQuery(favoritesRelPath, 'chordKey', 'equalTo', params.chordObj.chordKey)
           .then(function(data) {
             deferred.resolve(data);
           });
         }
         else { //Need to add a new record to the users favorites
-          plyFirebase.insert(favoritesRelPath,{
+          PlyFirebase.insert(favoritesRelPath, {
             chordKey: params.chordObj.chordKey,
             artist: params.chordObj.artist,
             title: params.chordObj.title,
@@ -62,7 +62,7 @@
 
       var getFavorites = function(userKey) {
         var deferred = $q.defer();
-        plyFirebase.getNode({
+        PlyFirebase.getNode({
           relPath: 'users/' + userKey + '/favorites',
           isOnce: true
         })
@@ -86,7 +86,7 @@
       var isChordFavorite = function(userKey,chordKey) {
         var deferred = $q.defer();
         var relPath = 'users/' + userKey + '/favorites';
-        plyFirebase.selectSimpleQuery(relPath,'chordKey','equalTo',chordKey)
+        PlyFirebase.selectSimpleQuery(relPath,'chordKey','equalTo',chordKey)
         .then(function(data) {
           deferred.resolve(!!data);
         });

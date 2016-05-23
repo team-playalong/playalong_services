@@ -40,7 +40,12 @@
         //   return request;
         // }
         function getChordById(chordId) {
-            return chordsRef.child(chordId);
+            return new Promise(function (resolve, reject) {
+                chordsRef.child(chordId)
+                    .once('value')
+                    .then(function (data) { return resolve(data); })
+                    .catch(function (error) { return reject(error); });
+            });
         }
         function searchChordsBy(searchBy, searchText) {
             var deferred = $q.defer();
