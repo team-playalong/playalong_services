@@ -12,23 +12,22 @@
   angular.module('playalong.services')
     .service('user', ['config','PlyFirebase','$q','login',
       function (config, PlyFirebase,$q,login) {
-      
+
       /**
        * [addRemoveFavorites description]
        * @param  params {
        * isAddFlag: true
        * chordObj : {
-       *  chordKey: 
+       *  chordKey:
           artist:
-          title: 
+          title:
        * },
        * userKey
        */
       var addRemoveFavorites = function(params) {
 
         var deferred = $q.defer();
-        if (!login.isLoggedIn())
-        {
+        if (!login.isLoggedIn()) {
           deferred.reject({
             message: 'user is not logged in'
           });
@@ -70,14 +69,14 @@
           console.log('msg');
           if (!!data)
           {
-            deferred.resolve(data);  
+            deferred.resolve(data);
           }
           else {
             deferred.reject({
               message: 'No favorites found'
             });
           }
-          
+
         });
 
         return deferred.promise;
@@ -99,5 +98,5 @@
         isChordFavorite: isChordFavorite
       };
     }]);
-  
+
 })();

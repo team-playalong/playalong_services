@@ -1,6 +1,7 @@
 (function () {
     'use strict';
-    function PlyFirebase() {
+    PlyFirebase.$inject = ['$firebaseObject'];
+    function PlyFirebase($firebaseObject) {
         // Initialize Firebase
         var config;
         if (PLY_CONFIG.env === 'dev') {
@@ -57,10 +58,8 @@
                 var ref = getRef(relPath);
                 if (ref && ref.push) {
                     ref.push(dataObj)
-                        .then(function () {
-                        resolve({
-                            message: 'success'
-                        });
+                        .then(function (ref) {
+                        resolve($firebaseObject(ref));
                     });
                 }
                 else {
@@ -87,6 +86,7 @@
             googleProvider: new firebase.auth.GoogleAuthProvider(),
             facebookProvider: new firebase.auth.FacebookAuthProvider(),
             getRef: getRef,
+            insert: insert,
             selectSimpleQuery: selectSimpleQuery,
             removeWithQuery: removeWithQuery,
             getNode: getNode,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
-    chords.$inject = ['config', '$q', 'PlyFirebase'];
-    function chords(config, $q, PlyFirebase) {
+    chords.$inject = ['config', '$q', 'PlyFirebase', '$firebaseObject'];
+    function chords(config, $q, PlyFirebase, $firebaseObject) {
         var chordsRef = PlyFirebase.getRef('chords');
         // var chordsData = $firebaseArray(ref);
         function increaseChordHitCount(chordKey) {
@@ -27,18 +27,18 @@
             });
             return result;
         }
-        // function addChord(chordObj) {
-        //   //TODO validate data        
-        //   //initialize data
-        //   chordObj.hitCount = 0;
-        //   chordObj.rating = 1;
-        //   chordObj.countRating = 0;
-        //   var request = chordsData.$add(chordObj)
-        //   .then(function(ref) {
-        //     return $firebaseObject(ref);
-        //   });
-        //   return request;
-        // }
+        function addChord(chordObj) {
+            return new Promise(function (resolve, reject) {
+                //TODO validate data
+                //initialize data
+                chordObj.hitCount = 0;
+                chordObj.rating = 1;
+                chordObj.countRating = 0;
+                PlyFirebase.insert('chords', chordObj)
+                    .then(function (result) { return resolve(result); })
+                    .catch(function (error) { return reject(error); });
+            });
+        }
         function getChordById(chordId) {
             return new Promise(function (resolve, reject) {
                 chordsRef.child(chordId)
@@ -106,7 +106,7 @@
         }
         // Public API here
         return {
-            // addChord: addChord,
+            addChord: addChord,
             getChordById: getChordById,
             searchChordsBy: searchChordsBy,
             increaseChordHitCount: increaseChordHitCount,

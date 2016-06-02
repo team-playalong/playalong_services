@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  chords.$inject = ['config', '$q', 'PlyFirebase'];
-  function chords(config, $q: ng.IQService, PlyFirebase) {
+  chords.$inject = ['config', '$q', 'PlyFirebase', '$firebaseObject'];
+  function chords(config, $q: ng.IQService, PlyFirebase, $firebaseObject) {
     const chordsRef = PlyFirebase.getRef('chords');
     // var chordsData = $firebaseArray(ref);
 
@@ -23,31 +23,30 @@
       var result = [];
       //Currently Workaround
       angular.forEach(rawData, function(value, chordKey) {
-        if (value.approved)
-        {
+        if (value.approved) {
           value.chordKey = chordKey;
-          result.push(value);  
+          result.push(value);
         }
       });
 
       return result;
     }
 
-    // function addChord(chordObj) {
-    //   //TODO validate data        
-      
-    //   //initialize data
-    //   chordObj.hitCount = 0;
-    //   chordObj.rating = 1;
-    //   chordObj.countRating = 0;
+    function addChord(chordObj) {
+      return new Promise((resolve, reject) => {
+        //TODO validate data
 
-    //   var request = chordsData.$add(chordObj)
-    //   .then(function(ref) {
-    //     return $firebaseObject(ref);
-    //   });
+        //initialize data
+        chordObj.hitCount = 0;
+        chordObj.rating = 1;
+        chordObj.countRating = 0;
 
-    //   return request;
-    // }
+        PlyFirebase.insert('chords', chordObj)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+      });
+
+    }
 
     function getChordById(chordId: string) {
       return new Promise((resolve, reject) => {
@@ -74,7 +73,7 @@
         var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
-      
+
       return deferred.promise;
     }
 
@@ -92,8 +91,8 @@
         var result = extractApprovedChords(rawData);
         deferred.resolve(result);
       });
-      
-      return deferred.promise; 
+
+      return deferred.promise;
     }
 
     /**
@@ -125,8 +124,8 @@
           deferred.reject(errorObject);
         });
 
-        
-      
+
+
       //TODO - add the rating to the user as well
 
       return deferred.promise;
@@ -134,7 +133,7 @@
 
     // Public API here
     return {
-      // addChord: addChord,
+      addChord: addChord,
       getChordById: getChordById,
       searchChordsBy: searchChordsBy,
       increaseChordHitCount: increaseChordHitCount,
@@ -144,5 +143,5 @@
 }
 
   angular.module('playalong.services')
-    .factory('chords', chords);  
+    .factory('chords', chords);
 })();

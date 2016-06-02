@@ -17,12 +17,12 @@
             else {
                 authModel = authData;
                 //Check if user is signed up
-                var usersRef = PlyFirebase.getRef('users');
-                usersRef.orderByChild('uid').equalTo(authData.uid).on('value', function (snapshot) {
+                var usersRef_1 = PlyFirebase.getRef('users');
+                usersRef_1.orderByChild('uid').equalTo(authData.uid).on('value', function (snapshot) {
                     var rawData = snapshot.val();
                     if (!rawData) {
                         //Add it
-                        var email, firstName, lastName, fullName;
+                        var email = void 0, firstName = void 0, lastName = void 0, fullName = void 0;
                         var providerData = getProviderData();
                         switch (providerData.providerId) {
                             case 'google.com':
@@ -49,7 +49,7 @@
                             userType: 'normal',
                             creationDate: new Date().getTime() / 1000
                         };
-                        usersRef.push(userModel);
+                        usersRef_1.push(userModel);
                     }
                     else {
                         userModel = rawData[Object.keys(rawData)[0]];

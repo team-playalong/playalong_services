@@ -1,8 +1,9 @@
 (function() {
   'use strict';
 
-  function PlyFirebase() {
-    
+  PlyFirebase.$inject = ['$firebaseObject'];
+  function PlyFirebase($firebaseObject) {
+
     // Initialize Firebase
     let config;
     if (PLY_CONFIG.env === 'dev') {
@@ -21,7 +22,7 @@
         storageBucket: 'playalong-prod.appspot.com',
       };
     }
-        
+
     firebase.initializeApp(config);
 
     let getRef = (path: string) => firebase.database().ref(path);
@@ -38,7 +39,7 @@
             resolve(res);
           });
       });
-    };  
+    };
 
     function removeWithQuery(relPath: string, fieldName: string, operator: string, fieldValue) {
       return new Promise((resolve, reject) => {
@@ -62,19 +63,17 @@
         const ref = getRef(relPath);
         if (ref && ref.push) {
           ref.push(dataObj)
-          .then(() => {
-            resolve({
-              message: 'success'
-            });
+          .then(ref => {
+            resolve($firebaseObject(ref));
           });
         }
         else {
           setTimeout(reject, 10);
         }
       });
-      
+
     };
-  
+
     function getNode(params) {
       return new Promise((resolve, reject) => {
         params = params || {};
@@ -93,6 +92,7 @@
       googleProvider: new firebase.auth.GoogleAuthProvider(),
       facebookProvider: new firebase.auth.FacebookAuthProvider(),
       getRef,
+      insert,
       selectSimpleQuery,
       removeWithQuery,
       getNode,

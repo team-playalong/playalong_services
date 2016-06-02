@@ -24,7 +24,7 @@ describe('Controller: MainCtrl', function () {
   it('should initialize all components', function () {
     expect(scope).toBeDefined();
     expect(scope.increaseChordHitCount).toBeDefined();
-    expect(scope.getChordById).toBeDefined(); 
-    expect(scope.searchBy).toBeDefined(); 
+    expect(scope.getChordById).toBeDefined();
+    expect(scope.searchBy).toBeDefined();
   });
 });
