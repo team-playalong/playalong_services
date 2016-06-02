@@ -49,12 +49,11 @@
     }
 
     function getChordById(chordId: string) {
-      return new Promise((resolve, reject) => {
-        chordsRef.child(chordId)
-          .once('value')
-          .then(data => resolve(data))
-          .catch(error => reject(error));
-        });
+      return PlyFirebase.getNode({
+        relPath: `chords/${chordId}`,
+        isOnce: true,
+        isFirebaseObject: true,
+      });
     }
 
     function searchChordsBy(searchBy, searchText) {

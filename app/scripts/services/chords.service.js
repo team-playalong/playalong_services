@@ -40,11 +40,10 @@
             });
         }
         function getChordById(chordId) {
-            return new Promise(function (resolve, reject) {
-                chordsRef.child(chordId)
-                    .once('value')
-                    .then(function (data) { return resolve(data); })
-                    .catch(function (error) { return reject(error); });
+            return PlyFirebase.getNode({
+                relPath: "chords/" + chordId,
+                isOnce: true,
+                isFirebaseObject: true,
             });
         }
         function searchChordsBy(searchBy, searchText) {

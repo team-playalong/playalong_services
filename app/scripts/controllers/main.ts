@@ -60,10 +60,11 @@
       };
 
       $scope.getChordById = function() {
-        chords.getChordById('-JyRhFHl-hNKfoYakcvb')
+        chords.getChordById('-K2pLaKUjrBQGDxRBGgr')
         .then(chord => {
           $scope.newChord = chord.val();
-        });
+        })
+        .catch(error => console.error(error));
       };
       $scope.getChordById();
 
@@ -71,10 +72,10 @@
       $scope.searchChord = function(searchBy, searchText) {
         chords.searchChordsBy(searchBy,searchText)
         .then(function(data) {
-          $scope.resultJson = data; 
+          $scope.resultJson = data;
         })
         .catch(function(data) {
-          $scope.resultJson = data; 
+          $scope.resultJson = data;
         });
       };
 
@@ -98,7 +99,7 @@
       setTimeout(function() {
 
         var chords = angular.element(document.querySelector('.transposeArea .chord'));
-        
+
         angular.forEach(chords, function(value){
           var oldText = angular.element(value).text();
           console.log(oldText);
@@ -125,7 +126,7 @@
         });
       };
 
-    
+
     }]);
-  
+
 })();

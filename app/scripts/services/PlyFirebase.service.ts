@@ -81,11 +81,19 @@
         const response = params.isOnce ? 'once' : 'on';
         ref[response]('value')
           .then((snapshot) => {
-            resolve(snapshot.val());
+            if (params.isFirebaseObject) {
+              resolve($firebaseObject(snapshot));
+            }
+            else {
+              resolve(snapshot.val());
+            }
+
           })
           .catch(error => reject({ message: 'Node does not exist', error }));
       });
     };
+
+
 
     return {
       auth: firebase.auth(),

@@ -75,7 +75,12 @@
                 var response = params.isOnce ? 'once' : 'on';
                 ref[response]('value')
                     .then(function (snapshot) {
-                    resolve(snapshot.val());
+                    if (params.isFirebaseObject) {
+                        resolve($firebaseObject(snapshot));
+                    }
+                    else {
+                        resolve(snapshot.val());
+                    }
                 })
                     .catch(function (error) { return reject({ message: 'Node does not exist', error: error }); });
             });

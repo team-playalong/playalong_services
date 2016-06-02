@@ -54,10 +54,11 @@
                 });
             };
             $scope.getChordById = function () {
-                chords.getChordById('-JyRhFHl-hNKfoYakcvb')
+                chords.getChordById('-K2pLaKUjrBQGDxRBGgr')
                     .then(function (chord) {
                     $scope.newChord = chord.val();
-                });
+                })
+                    .catch(function (error) { return console.error(error); });
             };
             $scope.getChordById();
             $scope.searchBy = 'artist';
