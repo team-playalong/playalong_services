@@ -22,6 +22,7 @@
         }
         firebase.initializeApp(config);
         var getRef = function (path) { return firebase.database().ref(path); };
+        var auth = firebase.auth();
         function selectSimpleQuery(relPath, fieldName, operator, fieldValue, refFlag) {
             return new Promise(function (resolve, reject) {
                 var ref = getRef(relPath);
@@ -89,14 +90,18 @@
             });
         }
         ;
+        function signOut() {
+            auth.signOut();
+        }
         return {
-            auth: firebase.auth(),
+            auth: auth,
             googleProvider: new firebase.auth.GoogleAuthProvider(),
             facebookProvider: new firebase.auth.FacebookAuthProvider(),
             getRef: getRef,
             insert: insert,
             selectSimpleQuery: selectSimpleQuery,
             removeWithQuery: removeWithQuery,
+            signOut: signOut,
             getNode: getNode,
         };
     }

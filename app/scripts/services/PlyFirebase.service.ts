@@ -26,6 +26,7 @@
     firebase.initializeApp(config);
 
     let getRef = (path: string) => firebase.database().ref(path);
+    const auth = firebase.auth();
 
     function selectSimpleQuery(relPath: string, fieldName: string, operator: string, fieldValue, refFlag: boolean) {
       return new Promise((resolve, reject) => {
@@ -98,14 +99,19 @@
 
 
 
+    function signOut() {
+      auth.signOut();
+    }
+
     return {
-      auth: firebase.auth(),
+      auth,
       googleProvider: new firebase.auth.GoogleAuthProvider(),
       facebookProvider: new firebase.auth.FacebookAuthProvider(),
       getRef,
       insert,
       selectSimpleQuery,
       removeWithQuery,
+      signOut,
       getNode,
     };
   }
