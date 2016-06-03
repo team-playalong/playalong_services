@@ -80,18 +80,16 @@
       return new Promise((resolve, reject) => {
         //TODO - data validation
         chordsRef
-        .orderByChild('hitCount').limitToLast(limitTo)
-        .on('value')
-        .then((snapshot) => {
-          //Extract the object
-          const rawData = snapshot.val();
-          if (!rawData) {
-            reject('No results for query getTopChords');
-          }
-          const result = extractApprovedChords(rawData);
-          resolve(result);
-        })
-        .catch((error) => reject(error));
+          .orderByChild('hitCount').limitToLast(limitTo)
+          .on('value', (snapshot) => {
+            //Extract the object
+            const rawData = snapshot.val();
+            if (!rawData) {
+              reject('No results for query getTopChords');
+            }
+            const result = extractApprovedChords(rawData);
+            resolve(result);
+          });
       });
     }
 

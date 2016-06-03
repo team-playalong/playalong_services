@@ -111,6 +111,10 @@
                     console.warn(data.message);
                 });
             };
+            $scope.getTopChords = function () {
+                chords.getTopChords(2)
+                    .then(function (data) { return console.log('top chords: ', data); });
+            };
         }]);
 })();
 //# sourceMappingURL=main.js.map

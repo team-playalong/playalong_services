@@ -126,7 +126,12 @@
         });
       };
 
+      $scope.getTopChords = () => {
+        chords.getTopChords(2)
+        .then((data) => console.log('top chords: ', data));
+      };
 
     }]);
+
 
 })();

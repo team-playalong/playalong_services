@@ -70,8 +70,7 @@
                 //TODO - data validation
                 chordsRef
                     .orderByChild('hitCount').limitToLast(limitTo)
-                    .on('value')
-                    .then(function (snapshot) {
+                    .on('value', function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
@@ -79,8 +78,7 @@
                     }
                     var result = extractApprovedChords(rawData);
                     resolve(result);
-                })
-                    .catch(function (error) { return reject(error); });
+                });
             });
         }
         /**
