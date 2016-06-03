@@ -70,7 +70,8 @@
                 //TODO - data validation
                 chordsRef
                     .orderByChild('hitCount').limitToLast(limitTo)
-                    .on('value', function (snapshot) {
+                    .once('value')
+                    .then(function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
