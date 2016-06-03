@@ -100,7 +100,7 @@
 
 
     function signOut() {
-      auth.signOut();
+      return auth.signOut();
     }
 
     return {
