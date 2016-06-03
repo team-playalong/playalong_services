@@ -39,69 +39,74 @@
                     .catch(function (error) { return reject(error); });
             });
         }
-        function getChordById(chordId) {
+        function getChordById(params) {
             return PlyFirebase.getNode({
-                relPath: "chords/" + chordId,
+                relPath: "chords/" + params.chordId,
                 isOnce: true,
-                isFirebaseObject: true,
+                isFirebaseObject: params.isFirebaseObject,
             });
         }
         function searchChordsBy(searchBy, searchText) {
-            var deferred = $q.defer();
-            //TODO - data validation
-            chordsRef.orderByChild(searchBy)
-                .startAt(searchText)
-                .endAt(searchText + '~')
-                .once('value', function (snapshot) {
-                //Extract the object
-                var rawData = snapshot.val();
-                if (!rawData) {
-                    deferred.reject('No results for query ' + searchText + ', search by ' + searchBy);
-                }
-                var result = extractApprovedChords(rawData);
-                deferred.resolve(result);
+            return new Promise(function (resolve, reject) {
+                //TODO - data validation
+                chordsRef
+                    .orderByChild(searchBy)
+                    .startAt(searchText)
+                    .endAt(searchText + "~")
+                    .once('value')
+                    .then(function (snapshot) {
+                    //Extract the object
+                    var rawData = snapshot.val();
+                    if (!rawData) {
+                        reject("No results for query " + searchText + " searching by " + searchBy);
+                    }
+                    var result = extractApprovedChords(rawData);
+                    resolve(result);
+                });
             });
-            return deferred.promise;
         }
         function getTopChords(limitTo) {
-            var deferred = $q.defer();
-            //TODO - data validation
-            chordsRef.orderByChild('hitCount').limitToLast(limitTo)
-                .on('value', function (snapshot) {
-                //Extract the object
-                var rawData = snapshot.val();
-                if (!rawData) {
-                    deferred.reject('No results for query getTopChords');
-                }
-                var result = extractApprovedChords(rawData);
-                deferred.resolve(result);
+            return new Promise(function (resolve, reject) {
+                //TODO - data validation
+                chordsRef
+                    .orderByChild('hitCount').limitToLast(limitTo)
+                    .on('value')
+                    .then(function (snapshot) {
+                    //Extract the object
+                    var rawData = snapshot.val();
+                    if (!rawData) {
+                        reject('No results for query getTopChords');
+                    }
+                    var result = extractApprovedChords(rawData);
+                    resolve(result);
+                })
+                    .catch(function (error) { return reject(error); });
             });
-            return deferred.promise;
         }
         /**
          * Add a rating to a chord and +1 to the total number of raters
          */
         function rateChord(chordKey, newRating) {
-            var deferred = $q.defer();
-            if (newRating < 1 || newRating > 5) {
-                deferred.reject('Rating value should be between 1 - 5');
-            }
-            var localRef = new Firebase(chordsRef + '/' + chordKey);
-            localRef.once('value', function (snapshot) {
-                var countRating = snapshot.val().countRating || 1;
-                var rating = snapshot.val().rating || 1;
-                //New weighted average
-                rating = ((rating * countRating) + (newRating * 1)) / (countRating + 1);
-                rating = Math.round(rating);
-                rating = Math.min(rating, 5);
-                localRef.child('countRating').set(countRating + 1);
-                localRef.child('rating').set(rating);
-                return deferred.resolve();
-            }, function (errorObject) {
-                deferred.reject(errorObject);
+            return new Promise(function (resolve, reject) {
+                if (newRating < 1 || newRating > 5) {
+                    reject('Rating value should be between 1 - 5');
+                }
+                var localRef = PlyFirebase.getRef("chords/" + chordKey);
+                localRef.once('value')
+                    .then(function (snapshot) {
+                    var countRating = snapshot.val().countRating || 1;
+                    var rating = snapshot.val().rating || 1;
+                    //New weighted average
+                    rating = ((rating * countRating) + (newRating * 1)) / (countRating + 1);
+                    rating = Math.round(rating);
+                    rating = Math.min(rating, 5);
+                    localRef.child('countRating').set(countRating + 1);
+                    localRef.child('rating').set(rating);
+                    return resolve();
+                })
+                    .catch(function (error) { return reject(error); });
+                //TODO - add the rating to the user as well
             });
-            //TODO - add the rating to the user as well
-            return deferred.promise;
         }
         // Public API here
         return {
@@ -110,7 +115,7 @@
             searchChordsBy: searchChordsBy,
             increaseChordHitCount: increaseChordHitCount,
             getTopChords: getTopChords,
-            rateChord: rateChord
+            rateChord: rateChord,
         };
     }
     angular.module('playalong.services')

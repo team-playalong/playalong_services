@@ -73,16 +73,19 @@
                 params = params || {};
                 var ref = getRef(params.relPath);
                 var response = params.isOnce ? 'once' : 'on';
-                ref[response]('value')
+                ref.once('value')
                     .then(function (snapshot) {
                     if (params.isFirebaseObject) {
-                        resolve($firebaseObject(snapshot));
+                        resolve($firebaseObject(snapshot.ref));
                     }
                     else {
                         resolve(snapshot.val());
                     }
                 })
-                    .catch(function (error) { return reject({ message: 'Node does not exist', error: error }); });
+                    .catch(function (error) {
+                    debugger;
+                    reject({ message: 'Node does not exist', error: error });
+                });
             });
         }
         ;

@@ -60,9 +60,9 @@
       };
 
       $scope.getChordById = function() {
-        chords.getChordById('-K2pLaKUjrBQGDxRBGgr')
+        chords.getChordById({ chordId: '-JxLKLUR8irZN0TA__XK', isFirebaseObject: false })
         .then(chord => {
-          $scope.newChord = chord.val();
+          $scope.newChord = chord;
         })
         .catch(error => console.error(error));
       };
@@ -70,7 +70,7 @@
 
       $scope.searchBy = 'artist';
       $scope.searchChord = function(searchBy, searchText) {
-        chords.searchChordsBy(searchBy,searchText)
+        chords.searchChordsBy(searchBy, searchText)
         .then(function(data) {
           $scope.resultJson = data;
         })
@@ -86,8 +86,8 @@
         });
       };
 
-      $scope.loginEmail = function(email,password) {
-        login.loginEmail(email,password)
+      $scope.loginEmail = (email, password) => {
+        login.loginEmail(email, password)
         .then(function(data){
           console.log(data);
         })

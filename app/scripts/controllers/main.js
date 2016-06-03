@@ -54,9 +54,9 @@
                 });
             };
             $scope.getChordById = function () {
-                chords.getChordById('-K2pLaKUjrBQGDxRBGgr')
+                chords.getChordById({ chordId: '-JxLKLUR8irZN0TA__XK', isFirebaseObject: false })
                     .then(function (chord) {
-                    $scope.newChord = chord.val();
+                    $scope.newChord = chord;
                 })
                     .catch(function (error) { return console.error(error); });
             };

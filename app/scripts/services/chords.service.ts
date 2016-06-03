@@ -48,96 +48,88 @@
 
     }
 
-    function getChordById(chordId: string) {
+    function getChordById(params: {chordId: string, isFirebaseObject: boolean}) {
       return PlyFirebase.getNode({
-        relPath: `chords/${chordId}`,
+        relPath: `chords/${params.chordId}`,
         isOnce: true,
-        isFirebaseObject: true,
+        isFirebaseObject: params.isFirebaseObject,
       });
     }
 
     function searchChordsBy(searchBy, searchText) {
-      var deferred = $q.defer();
-
-      //TODO - data validation
-      chordsRef.orderByChild(searchBy)
-      .startAt(searchText)
-      .endAt(searchText+'~')
-      .once('value', function(snapshot) {
-        //Extract the object
-        var rawData = snapshot.val();
-        if (!rawData) {
-          deferred.reject('No results for query ' + searchText +', search by ' + searchBy);
-        }
-        var result = extractApprovedChords(rawData);
-        deferred.resolve(result);
+      return new Promise((resolve, reject) => {
+        //TODO - data validation
+        chordsRef
+        .orderByChild(searchBy)
+        .startAt(searchText)
+        .endAt(`${searchText}~`)
+        .once('value')
+        .then((snapshot) => {
+          //Extract the object
+          const rawData = snapshot.val();
+          if (!rawData) {
+            reject(`No results for query ${searchText} searching by ${searchBy}`);
+          }
+          const result = extractApprovedChords(rawData);
+          resolve(result);
+        });
       });
-
-      return deferred.promise;
     }
 
     function getTopChords(limitTo) {
-      var deferred = $q.defer();
-
-      //TODO - data validation
-      chordsRef.orderByChild('hitCount').limitToLast(limitTo)
-      .on('value', function(snapshot) {
-        //Extract the object
-        var rawData = snapshot.val();
-        if (!rawData) {
-          deferred.reject('No results for query getTopChords');
-        }
-        var result = extractApprovedChords(rawData);
-        deferred.resolve(result);
+      return new Promise((resolve, reject) => {
+        //TODO - data validation
+        chordsRef
+        .orderByChild('hitCount').limitToLast(limitTo)
+        .on('value')
+        .then((snapshot) => {
+          //Extract the object
+          const rawData = snapshot.val();
+          if (!rawData) {
+            reject('No results for query getTopChords');
+          }
+          const result = extractApprovedChords(rawData);
+          resolve(result);
+        })
+        .catch((error) => reject(error));
       });
-
-      return deferred.promise;
     }
 
     /**
      * Add a rating to a chord and +1 to the total number of raters
      */
-    function rateChord(chordKey, newRating)
-    {
+    function rateChord(chordKey, newRating) {
+      return new Promise((resolve, reject) => {
+        if (newRating < 1 || newRating > 5) {
+          reject('Rating value should be between 1 - 5');
+        }
+        const localRef = PlyFirebase.getRef(`chords/${chordKey}`);
+        localRef.once('value')
+        .then((snapshot) => {
+          const countRating = snapshot.val().countRating || 1;
+          let rating = snapshot.val().rating || 1;
 
-      var deferred = $q.defer();
-
-      if (newRating < 1 || newRating > 5)
-      {
-        deferred.reject('Rating value should be between 1 - 5');
-      }
-      var localRef = new Firebase(chordsRef + '/' + chordKey);
-      localRef.once('value',function(snapshot) {
-        var countRating = snapshot.val().countRating || 1;
-        var rating = snapshot.val().rating || 1;
-
-        //New weighted average
-        rating = ((rating * countRating) + (newRating*1))/(countRating + 1);
-        rating = Math.round(rating);
-        rating = Math.min(rating,5);
-        localRef.child('countRating').set(countRating + 1);
-        localRef.child('rating').set(rating);
-        return deferred.resolve();
-      },
-      function (errorObject) {
-          deferred.reject(errorObject);
-        });
-
-
-
-      //TODO - add the rating to the user as well
-
-      return deferred.promise;
+          //New weighted average
+          rating = ((rating * countRating) + (newRating * 1)) / (countRating + 1);
+          rating = Math.round(rating);
+          rating = Math.min(rating, 5);
+          localRef.child('countRating').set(countRating + 1);
+          localRef.child('rating').set(rating);
+          return resolve();
+        })
+        .catch((error) => reject(error));
+        //TODO - add the rating to the user as well
+      });
     }
 
     // Public API here
     return {
-      addChord: addChord,
-      getChordById: getChordById,
-      searchChordsBy: searchChordsBy,
-      increaseChordHitCount: increaseChordHitCount,
-      getTopChords: getTopChords,
-      rateChord: rateChord
+      addChord,
+      getChordById,
+      searchChordsBy,
+      increaseChordHitCount,
+      getTopChords,
+      rateChord,
     };
 }
 
