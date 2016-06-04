@@ -7,8 +7,11 @@
         function increaseChordHitCount(chordKey) {
             return new Promise(function (resolve, reject) {
                 var localRef = chordsRef.child(chordKey);
-                localRef.orderByChild('hitCount').once('value')
-                    .then(function (snapshot) {
+                localRef.orderByChild('hitCount')
+                    .once('value', function (snapshot) {
+                    if (!snapshot || !snapshot.val()) {
+                        reject("Invalid chord key " + chordKey);
+                    }
                     var oldHitCount = snapshot.val().hitCount || 0;
                     localRef.update({ hitCount: oldHitCount + 1 });
                     resolve();
@@ -53,8 +56,7 @@
                     .orderByChild(searchBy)
                     .startAt(searchText)
                     .endAt(searchText + "~")
-                    .once('value')
-                    .then(function (snapshot) {
+                    .once('value', function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
@@ -69,9 +71,9 @@
             return new Promise(function (resolve, reject) {
                 //TODO - data validation
                 chordsRef
-                    .orderByChild('hitCount').limitToLast(limitTo)
-                    .once('value')
-                    .then(function (snapshot) {
+                    .orderByChild('hitCount')
+                    .limitToLast(limitTo)
+                    .once('value', function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
@@ -91,8 +93,8 @@
                     reject('Rating value should be between 1 - 5');
                 }
                 var localRef = PlyFirebase.getRef("chords/" + chordKey);
-                localRef.once('value')
-                    .then(function (snapshot) {
+                localRef
+                    .once('value', function (snapshot) {
                     var countRating = snapshot.val().countRating || 1;
                     var rating = snapshot.val().rating || 1;
                     //New weighted average

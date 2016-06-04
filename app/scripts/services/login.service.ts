@@ -42,11 +42,11 @@
               email = providerData.email;
               firstName = '';
               lastName = '';
-              break;  
+              break;
               default:
               break;
             }
-            
+
 
             userModel = {
               //TODO - Validations and extract by platform
@@ -61,7 +61,7 @@
           }
           else {
 
-            userModel = rawData[Object.keys(rawData)[0]]; 
+            userModel = rawData[Object.keys(rawData)[0]];
 
             //Append the key to the model
             userModel.userKey = Object.keys(rawData)[0];
@@ -79,11 +79,11 @@
                 '$last_login': new Date(),
                 'firstName': userModel.firstName || '',       // Add any attributes you'd like to use in the email subject or body.
                 'lastName': userModel.lastName || '',
-                'userType': userModel.userType || 'normal' 
+                'userType': userModel.userType || 'normal'
               });
-            window.mixpanel.track('ply_user_login');  
+            window.mixpanel.track('ply_user_login');
           }
-        }); 
+        });
       }
     });
 
@@ -97,13 +97,13 @@
 
     function loginSocial(platform: string) {
       return new Promise((resolve, reject) => {
-       
+
         let provider;
         switch (platform) {
           case 'facebook':
             provider = PlyFirebase.facebookProvider;
             break;
-          case 'google': 
+          case 'google':
             provider = PlyFirebase.googleProvider;
             break;
           default:
@@ -111,7 +111,7 @@
             break;
         }
         provider.addScope('email');
-        
+
 
         PlyFirebase.auth.signInWithPopup(provider)
         .then(authData => {
@@ -135,15 +135,15 @@
   let getAuth = () => authModel;
 
   let getFullName = () => getFirstName() + ' ' + getLastName();
-  
+
 
   let getLastName = () => userModel ? userModel.lastName : '';
-  
+
   let getFirstName = () => userModel ? userModel.firstName : '';
-  
+
   function isSuperUser() {
-    return  getUser() && getUser().userType && 
-    (this.getUser().userType.indexOf('superuser') !== -1 || this.getUser().userType.indexOf('admin') !== -1) ;  
+    return  getUser() && getUser().userType &&
+    (this.getUser().userType.indexOf('superuser') !== -1 || this.getUser().userType.indexOf('admin') !== -1) ;
   };
 
   function createUser(email: string, password: string) {
@@ -163,13 +163,13 @@
           resolve();
         })
         .catch(error => reject(error));
-    }); 
+    });
   }
 
   function changePassword(email: string, oldPassword: string, newPassword: string) {
     return new Promise((resolve, reject) => {
       let ref = new Firebase(config.paths.firebase);
-      
+
       ref.changePassword({email, oldPassword, newPassword}, function(error) {
         if (error === null) {
           console.log(`Password Changed`);
@@ -178,7 +178,7 @@
           console.log('Error changing password: ', error);
           reject(error);
         }
-      });  
+      });
     });
   }
 
@@ -190,14 +190,14 @@
     isLoggedIn,
     logout,
     getFirstName,
-    getLastName, 
+    getLastName,
     getFullName,
     isSuperUser,
     createUser,
     resetPassword,
     changePassword,
   };
-  }  
+  }
 
   angular.module('playalong.services')
     .factory('login', login);
