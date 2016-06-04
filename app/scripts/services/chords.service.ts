@@ -9,11 +9,8 @@
     function increaseChordHitCount(chordKey: string) {
       return new Promise((resolve, reject) => {
         const localRef = chordsRef.child(chordKey);
-        localRef.orderByChild('hitCount')
-          .once('value', (snapshot) => {
-            if (!snapshot || !snapshot.val()) {
-              reject(`Invalid chord key ${chordKey}`);
-            }
+        localRef.orderByChild('hitCount').once('value')
+          .then((snapshot) => {
             const oldHitCount = snapshot.val().hitCount || 0;
             localRef.update({ hitCount: oldHitCount + 1 });
             resolve();
@@ -66,7 +63,8 @@
         .orderByChild(searchBy)
         .startAt(searchText)
         .endAt(`${searchText}~`)
-        .once('value', (snapshot) => {
+        .once('value')
+        .then((snapshot) => {
           //Extract the object
           const rawData = snapshot.val();
           if (!rawData) {
@@ -78,13 +76,14 @@
       });
     }
 
-    function getTopChords(limitTo) {
+    function getTopChords(limitTo = 10) {
       return new Promise((resolve, reject) => {
         //TODO - data validation
         chordsRef
           .orderByChild('hitCount')
           .limitToLast(limitTo)
-          .once('value', (snapshot) => {
+          .once('value')
+          .then(snapshot => {
             //Extract the object
             const rawData = snapshot.val();
             if (!rawData) {
@@ -92,7 +91,8 @@
             }
             const result = extractApprovedChords(rawData);
             resolve(result);
-          });
+          })
+          .catch(error => reject(error));
       });
     }
 
@@ -105,8 +105,8 @@
           reject('Rating value should be between 1 - 5');
         }
         const localRef = PlyFirebase.getRef(`chords/${chordKey}`);
-        localRef
-        .once('value', (snapshot) => {
+        localRef.once('value')
+        .then((snapshot) => {
           const countRating = snapshot.val().countRating || 1;
           let rating = snapshot.val().rating || 1;
 

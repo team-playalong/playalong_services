@@ -7,11 +7,8 @@
         function increaseChordHitCount(chordKey) {
             return new Promise(function (resolve, reject) {
                 var localRef = chordsRef.child(chordKey);
-                localRef.orderByChild('hitCount')
-                    .once('value', function (snapshot) {
-                    if (!snapshot || !snapshot.val()) {
-                        reject("Invalid chord key " + chordKey);
-                    }
+                localRef.orderByChild('hitCount').once('value')
+                    .then(function (snapshot) {
                     var oldHitCount = snapshot.val().hitCount || 0;
                     localRef.update({ hitCount: oldHitCount + 1 });
                     resolve();
@@ -56,7 +53,8 @@
                     .orderByChild(searchBy)
                     .startAt(searchText)
                     .endAt(searchText + "~")
-                    .once('value', function (snapshot) {
+                    .once('value')
+                    .then(function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
@@ -68,12 +66,14 @@
             });
         }
         function getTopChords(limitTo) {
+            if (limitTo === void 0) { limitTo = 10; }
             return new Promise(function (resolve, reject) {
                 //TODO - data validation
                 chordsRef
                     .orderByChild('hitCount')
                     .limitToLast(limitTo)
-                    .once('value', function (snapshot) {
+                    .once('value')
+                    .then(function (snapshot) {
                     //Extract the object
                     var rawData = snapshot.val();
                     if (!rawData) {
@@ -81,7 +81,8 @@
                     }
                     var result = extractApprovedChords(rawData);
                     resolve(result);
-                });
+                })
+                    .catch(function (error) { return reject(error); });
             });
         }
         /**
@@ -93,8 +94,8 @@
                     reject('Rating value should be between 1 - 5');
                 }
                 var localRef = PlyFirebase.getRef("chords/" + chordKey);
-                localRef
-                    .once('value', function (snapshot) {
+                localRef.once('value')
+                    .then(function (snapshot) {
                     var countRating = snapshot.val().countRating || 1;
                     var rating = snapshot.val().rating || 1;
                     //New weighted average
