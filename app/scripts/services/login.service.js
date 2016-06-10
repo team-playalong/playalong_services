@@ -56,7 +56,7 @@
                         //Append the key to the model
                         userModel.userKey = Object.keys(rawData)[0];
                     }
-                    $rootScope.$broadcast('plyUserLoggedIn');
+                    $rootScope.$broadcast('plyUserLoggedIn', userModel);
                     //Identify against customerIo
                     customerIoHelper.identifyUser(userModel);
                     if (!!window.mixpanel) {
