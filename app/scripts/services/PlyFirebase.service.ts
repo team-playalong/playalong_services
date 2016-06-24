@@ -23,7 +23,10 @@
       };
     }
 
-    firebase.initializeApp(config);
+    if (!firebase.apps || !firebase.apps.length) {
+      firebase.initializeApp(config);  
+    }
+    
 
     let getRef = (path: string) => firebase.database().ref(path);
     const auth = firebase.auth();
