@@ -4,6 +4,7 @@ describe('weeklyChart: service', function () {
   var WeeklyChart;
   var $httpBackend;
   var PlyFirebase;
+  var res;
   var $q;
 
   // load the service's module
@@ -23,6 +24,10 @@ describe('weeklyChart: service', function () {
     expect(WeeklyChart).toBeDefined();
   });
 
+  it('should convert array of songs to object', function() {
+    res = WeeklyChart.arrayToObject([{chordKey: 'asd', artist: 'test'}]);
+    expect(res.asd.artist).toBe('test');
+  });
   // fit('should insert a new weekly chart', function(done) {
   //   spyOn(PlyFirebase, 'insert').and.returnValue($q.when({}));
 
