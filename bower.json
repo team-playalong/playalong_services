@@ -31,6 +31,7 @@
   "resolutions": {
     "angular": "1.4.9",
     "angular-translate": "~2.11.0",
-    "messageformat": "^0.3.1"
+    "messageformat": "^0.3.1",
+    "firebase": "3.x.x"
   }
 }

@@ -25,6 +25,9 @@ module.exports = function(config) {
 
       'app/env.js',
 
+      //es6-promise polyfill
+      'node_modules/es6-promise/dist/es6-promise.min.js',
+
       // bower:js
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',

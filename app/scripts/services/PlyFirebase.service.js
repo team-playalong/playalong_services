@@ -20,7 +20,9 @@
                 storageBucket: 'playalong-prod.appspot.com',
             };
         }
-        firebase.initializeApp(config);
+        if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(config);
+        }
         var getRef = function (path) { return firebase.database().ref(path); };
         var auth = firebase.auth();
         function selectSimpleQuery(relPath, fieldName, operator, fieldValue, refFlag) {
