@@ -13,8 +13,8 @@
         // Do not use in new projects.
         $sceProvider.enabled(false);
     })
-        .controller('MainCtrl', ['$scope', 'config', '$http', 'chords', 'login', 'user', 'transposer',
-        function ($scope, config, $http, chords, login, user, transposer) {
+        .controller('MainCtrl', ['$scope', 'config', '$http', 'chords', 'login', 'user', 'transposer', 'WeeklyChart',
+        function ($scope, config, $http, chords, login, user, transposer, WeeklyChart) {
             $scope.login = login;
             $scope.transposer = transposer;
             $scope.chordRef = null;
@@ -114,6 +114,9 @@
             $scope.getTopChords = function () {
                 chords.getTopChords(2)
                     .then(function (data) { return console.log('top chords: ', data); });
+            };
+            $scope.addWeeklyChart = function () {
+                WeeklyChart.createWeeklyChart(mockData.getMockWeeklyChart());
             };
         }]);
 })();
