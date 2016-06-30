@@ -10,12 +10,6 @@
             return res;
         }
         function createWeeklyChart(weeklyChart) {
-            if (weeklyChart === void 0) { weeklyChart = {
-                dateCreated: Date.now(),
-                weekNumber: 1,
-                year: 2016,
-                songs: [],
-            }; }
             // convert songs into objects
             weeklyChart.songs = this.arrayToObject(weeklyChart.songs);
             return new Promise(function (resolve, reject) {
@@ -24,8 +18,16 @@
                     .catch(function (error) { return reject(error); });
             });
         }
+        function getLatestChart() {
+            return new Promise(function (resolve, reject) {
+                PlyFirebase.selecteByAggregate('weeklyCharts', 'dateCreated')
+                    .then(function (result) { return resolve(result); })
+                    .catch(function (error) { return reject(error); });
+            });
+        }
         return {
             createWeeklyChart: createWeeklyChart,
+            getLatestChart: getLatestChart,
             arrayToObject: arrayToObject,
         };
     }

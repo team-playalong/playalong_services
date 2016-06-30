@@ -25,6 +25,30 @@
         }
         var getRef = function (path) { return firebase.database().ref(path); };
         var auth = firebase.auth();
+        function selecteByAggregate(relPath, fieldName, operator) {
+            return new Promise(function (resolve, reject) {
+                var ref = getRef(relPath);
+                ref
+                    .orderByChild(fieldName)
+                    .once('value')
+                    .then(function (snapshot) {
+                    resolve(getMax(snapshot, fieldName));
+                });
+            });
+        }
+        function getMax(collection, fieldName) {
+            var max;
+            var maxItem;
+            var currentItem;
+            collection.forEach(function (curr) {
+                currentItem = curr.val();
+                if (!max || currentItem[fieldName] > max) {
+                    max = currentItem[fieldName];
+                    maxItem = currentItem;
+                }
+            });
+            return maxItem;
+        }
         function selectSimpleQuery(relPath, fieldName, operator, fieldValue, refFlag) {
             return new Promise(function (resolve, reject) {
                 var ref = getRef(relPath);
@@ -33,7 +57,6 @@
                     .once('value')
                     .then(function (snapshot) {
                     var res = refFlag ? snapshot : snapshot.val();
-                    console.log(res);
                     resolve(res);
                 });
             });
@@ -105,6 +128,7 @@
             removeWithQuery: removeWithQuery,
             signOut: signOut,
             getNode: getNode,
+            selecteByAggregate: selecteByAggregate,
         };
     }
     angular.module('playalong.services')

@@ -96,6 +96,16 @@
   </div>
   <br><br>
 
+  <div class="form-group">
+    <div class="control-label">Get latest weekly chart</div>
+    <button class="btn btn-primary" ng-click="getLatestChart()">Go</button>
+
+    <pre>
+      {{latestWeeklyChart | json}}
+    </pre>
+  </div>
+  <br><br>
+
   <div ng-if="login.isSuperUser()">
     Only superusers can see this!
   </div>

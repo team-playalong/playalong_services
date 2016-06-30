@@ -20,7 +20,7 @@
       $scope.transposer = transposer;
       $scope.chordRef = null;
       $scope.test = 'ltr';
-
+      $scope.WeeklyChart = WeeklyChart;
       $scope.addChord = function() {
         $http.get(config.paths.mocks.hebrewChord)
         .success(function(response) {
@@ -133,6 +133,13 @@
 
       $scope.addWeeklyChart = () => {
         WeeklyChart.createWeeklyChart(mockData.getMockWeeklyChart());
+      };
+
+      $scope.getLatestChart = () => {
+        WeeklyChart.getLatestChart()
+        .then(data => {
+          $scope.latestWeeklyChart = data;
+        });
       };
     }]);
 

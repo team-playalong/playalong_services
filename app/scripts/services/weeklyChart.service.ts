@@ -27,12 +27,7 @@
       return res;
     }
 
-    function createWeeklyChart(weeklyChart: WeeklyChart = {
-      dateCreated: Date.now(),
-      weekNumber: 1,
-      year: 2016,
-      songs: [],
-    }) {
+    function createWeeklyChart(weeklyChart: WeeklyChart) {
       // convert songs into objects
       weeklyChart.songs = this.arrayToObject(weeklyChart.songs);
 
@@ -44,8 +39,17 @@
 
     }
 
+    function getLatestChart() {
+      return new Promise((resolve, reject) => {
+        PlyFirebase.selecteByAggregate('weeklyCharts', 'dateCreated')
+        .then(result => resolve(result))
+        .catch(error => reject(error));
+      });
+    }
+
     return {
       createWeeklyChart,
+      getLatestChart,
       arrayToObject,
     };
   }
