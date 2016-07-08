@@ -16,7 +16,7 @@
         // Required attributes
         id: userModel.uid,           // Unique id for the currently signed in user in your application.
         email: userModel.email || '', // Email of the currently signed in user.
-        created_at: userModel.creationDate || new Date(),   // Timestamp in your system that represents when
+        created_at: userModel.creationDate || Date.now(),   // Timestamp in your system that represents when
                                                       // the user first signed up. You'll want to send it
                                                       // as seconds since the epoch.
 
@@ -25,12 +25,12 @@
         lastName: userModel.lastName || '',
         userType: userModel.userType || 'normal'      // To use the example segments, set this to 'free' or 'premium'.
       });
-      
+
       return true;
-    };     
+    };
     return {
       identifyUser: identifyUser
     };
   }]);
-  
+
 })();

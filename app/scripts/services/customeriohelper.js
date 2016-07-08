@@ -17,7 +17,7 @@
                     // Required attributes
                     id: userModel.uid,
                     email: userModel.email || '',
-                    created_at: userModel.creationDate || new Date(),
+                    created_at: userModel.creationDate || Date.now(),
                     // the user first signed up. You'll want to send it
                     // as seconds since the epoch.
                     // Optional (these are examples. You can name attributes what you wish)

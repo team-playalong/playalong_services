@@ -44,7 +44,7 @@
                             chordKey: params.chordObj.chordKey,
                             artist: params.chordObj.artist,
                             title: params.chordObj.title,
-                            creationDate: new Date()
+                            creationDate: Date.now(),
                         })
                             .then(function (data) {
                             resolve(data);
