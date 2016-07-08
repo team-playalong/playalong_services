@@ -78,7 +78,7 @@
           .then((data: any) => {
             if (data.hasChildren()) {
               data.forEach(function(childRef) {
-                childRef.ref().remove();
+                childRef.ref.remove();
               });
             }
             resolve({
