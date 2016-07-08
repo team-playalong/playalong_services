@@ -40,6 +40,7 @@
         chordObj.hitCount = 0;
         chordObj.rating = 1;
         chordObj.countRating = 0;
+        chordObj.creationDate = Date.now();
 
         PlyFirebase.insert('chords', chordObj)
         .then(result => resolve(result))
@@ -76,11 +77,11 @@
       });
     }
 
-    function getTopChords(limitTo = 10) {
+    function getTopCommon(limitTo, field = 'hitCount') {
       return new Promise((resolve, reject) => {
         //TODO - data validation
         chordsRef
-          .orderByChild('hitCount')
+          .orderByChild(field)
           .limitToLast(limitTo)
           .once('value')
           .then(snapshot => {
@@ -94,6 +95,14 @@
           })
           .catch(error => reject(error));
       });
+    }
+
+    function getNewestChords(limitTo = 10) {
+      return getTopCommon(limitTo, 'creationDate');
+    }
+
+    function getTopChords(limitTo = 10) {
+      return getTopCommon(limitTo, 'hitCount');
     }
 
     /**
