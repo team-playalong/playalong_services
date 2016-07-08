@@ -122,6 +122,7 @@
         // Public API here
         return {
             addChord: addChord,
+            getNewestChords: getNewestChords,
             getChordById: getChordById,
             searchChordsBy: searchChordsBy,
             increaseChordHitCount: increaseChordHitCount,

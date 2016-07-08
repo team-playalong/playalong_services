@@ -135,6 +135,7 @@
     // Public API here
     return {
       addChord,
+      getNewestChords,
       getChordById,
       searchChordsBy,
       increaseChordHitCount,
