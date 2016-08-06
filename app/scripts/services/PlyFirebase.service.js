@@ -26,6 +26,8 @@
         var getRef = function (path) { return firebase.database().ref(path); };
         var auth = firebase.auth();
         function selecteByAggregate(relPath, fieldName, operator) {
+            if (fieldName === void 0) { fieldName = ''; }
+            if (operator === void 0) { operator = ''; }
             fieldName = fieldName.trim();
             operator = operator.trim();
             return new Promise(function (resolve, reject) {
@@ -54,6 +56,10 @@
             return maxItem;
         }
         function selectSimpleQuery(relPath, fieldName, operator, fieldValue, refFlag) {
+            if (relPath === void 0) { relPath = ''; }
+            if (fieldName === void 0) { fieldName = ''; }
+            if (operator === void 0) { operator = ''; }
+            if (fieldValue === void 0) { fieldValue = ''; }
             fieldName = fieldName.trim();
             operator = operator.trim();
             if (typeof fieldValue === 'string') {
@@ -72,6 +78,10 @@
         }
         ;
         function removeWithQuery(relPath, fieldName, operator, fieldValue) {
+            if (relPath === void 0) { relPath = ''; }
+            if (fieldName === void 0) { fieldName = ''; }
+            if (operator === void 0) { operator = ''; }
+            if (fieldValue === void 0) { fieldValue = ''; }
             fieldName = fieldName.trim();
             operator = operator.trim();
             if (typeof fieldValue === 'string') {
@@ -94,6 +104,7 @@
         }
         ;
         function insert(relPath, dataObj) {
+            if (relPath === void 0) { relPath = ''; }
             return new Promise(function (resolve, reject) {
                 var ref = getRef(relPath);
                 if (ref && ref.push) {

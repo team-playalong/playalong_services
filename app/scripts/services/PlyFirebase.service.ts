@@ -30,7 +30,7 @@
     let getRef = (path: string) => firebase.database().ref(path);
     const auth = firebase.auth();
 
-    function selecteByAggregate(relPath: string, fieldName: string, operator: string) {
+    function selecteByAggregate(relPath: string, fieldName = '', operator = '') {
       fieldName = fieldName.trim();
       operator = operator.trim();
       return new Promise((resolve, reject) => {
@@ -62,7 +62,7 @@
     }
 
 
-    function selectSimpleQuery(relPath: string, fieldName: string, operator: string, fieldValue, refFlag: boolean) {
+    function selectSimpleQuery(relPath = '', fieldName = '', operator = '', fieldValue = '', refFlag: boolean) {
       fieldName = fieldName.trim();
       operator = operator.trim();
       if (typeof fieldValue === 'string') {
@@ -81,7 +81,7 @@
       });
     };
 
-    function removeWithQuery(relPath: string, fieldName: string, operator: string, fieldValue) {
+    function removeWithQuery(relPath = '', fieldName = '', operator = '', fieldValue = '') {
       fieldName = fieldName.trim();
       operator = operator.trim();
       if (typeof fieldValue === 'string') {
@@ -104,7 +104,7 @@
       });
     };
 
-    function insert(relPath: string, dataObj) {
+    function insert(relPath = '', dataObj) {
       return new Promise((resolve, reject) => {
         const ref = getRef(relPath);
         if (ref && ref.push) {
