@@ -27,11 +27,12 @@
       firebase.initializeApp(config);
     }
 
-
     let getRef = (path: string) => firebase.database().ref(path);
     const auth = firebase.auth();
 
     function selecteByAggregate(relPath: string, fieldName: string, operator: string) {
+      fieldName = fieldName.trim();
+      operator = operator.trim();
       return new Promise((resolve, reject) => {
         const ref = getRef(relPath);
         ref
@@ -43,10 +44,12 @@
       });
     }
 
-    function getMax(collection, fieldName) {
+    function getMax(collection, fieldName = '') {
       let max;
       let maxItem;
       let currentItem;
+
+      fieldName = fieldName.trim();
       collection.forEach(curr => {
         currentItem = curr.val();
         if (!max || currentItem[fieldName] > max) {
@@ -60,6 +63,12 @@
 
 
     function selectSimpleQuery(relPath: string, fieldName: string, operator: string, fieldValue, refFlag: boolean) {
+      fieldName = fieldName.trim();
+      operator = operator.trim();
+      if (typeof fieldValue === 'string') {
+        fieldValue = fieldValue.trim();
+      }
+
       return new Promise((resolve, reject) => {
         const ref = getRef(relPath);
         ref
@@ -73,6 +82,12 @@
     };
 
     function removeWithQuery(relPath: string, fieldName: string, operator: string, fieldValue) {
+      fieldName = fieldName.trim();
+      operator = operator.trim();
+      if (typeof fieldValue === 'string') {
+        fieldValue = fieldValue.trim();
+      }
+
       return new Promise((resolve, reject) => {
         selectSimpleQuery(relPath, fieldName, operator, fieldValue, true)
           .then((data: any) => {

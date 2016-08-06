@@ -26,6 +26,8 @@
         var getRef = function (path) { return firebase.database().ref(path); };
         var auth = firebase.auth();
         function selecteByAggregate(relPath, fieldName, operator) {
+            fieldName = fieldName.trim();
+            operator = operator.trim();
             return new Promise(function (resolve, reject) {
                 var ref = getRef(relPath);
                 ref
@@ -37,9 +39,11 @@
             });
         }
         function getMax(collection, fieldName) {
+            if (fieldName === void 0) { fieldName = ''; }
             var max;
             var maxItem;
             var currentItem;
+            fieldName = fieldName.trim();
             collection.forEach(function (curr) {
                 currentItem = curr.val();
                 if (!max || currentItem[fieldName] > max) {
@@ -50,6 +54,11 @@
             return maxItem;
         }
         function selectSimpleQuery(relPath, fieldName, operator, fieldValue, refFlag) {
+            fieldName = fieldName.trim();
+            operator = operator.trim();
+            if (typeof fieldValue === 'string') {
+                fieldValue = fieldValue.trim();
+            }
             return new Promise(function (resolve, reject) {
                 var ref = getRef(relPath);
                 ref
@@ -63,6 +72,11 @@
         }
         ;
         function removeWithQuery(relPath, fieldName, operator, fieldValue) {
+            fieldName = fieldName.trim();
+            operator = operator.trim();
+            if (typeof fieldValue === 'string') {
+                fieldValue = fieldValue.trim();
+            }
             return new Promise(function (resolve, reject) {
                 selectSimpleQuery(relPath, fieldName, operator, fieldValue, true)
                     .then(function (data) {
