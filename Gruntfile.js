@@ -46,13 +46,6 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
-      js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: [],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
-      },
       jsTest: {
         files: ['test/**/*.js'],
         tasks: ['karma']
@@ -130,7 +123,6 @@ module.exports = function (grunt) {
         }
       }
     },
-
 
     // Empties folders to start fresh
     clean: {
@@ -497,7 +489,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'test',
+    // 'test',
     'build'
   ]);
 };

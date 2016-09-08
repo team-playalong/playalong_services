@@ -14,13 +14,13 @@
     // Do not use in new projects.
     $sceProvider.enabled(false);
   })
-  .controller('MainCtrl',['$scope','config','$http', 'chords','login','user','transposer',
-   function ($scope,config,$http,chords,login,user,transposer) {
+  .controller('MainCtrl',['$scope','config','$http', 'chords','login','user','transposer', 'WeeklyChart',
+   function ($scope,config,$http,chords,login,user,transposer, WeeklyChart) {
       $scope.login = login;
       $scope.transposer = transposer;
       $scope.chordRef = null;
       $scope.test = 'ltr';
-
+      $scope.WeeklyChart = WeeklyChart;
       $scope.addChord = function() {
         $http.get(config.paths.mocks.hebrewChord)
         .success(function(response) {
@@ -29,11 +29,10 @@
           .then(function(chord) {
             $scope.chordRef = chord;
             //We now have a reference to the entire object
-            $scope.chordRef.$bindTo($scope, "newChord").then(function() {
+            $scope.chordRef.$bindTo($scope, 'newChord').then(function() {
               console.log('binded!');
             });
           });
-
         });
       };
 
@@ -61,22 +60,22 @@
       };
 
       $scope.getChordById = function() {
-        var result = chords.getChordById('-JyRhFHl-hNKfoYakcvb');
-        if (result)
-        {
-          result.$bindTo($scope, "newChord");
-        }
+        chords.getChordById({ chordId: '-JxLKLUR8irZN0TA__XK', isFirebaseObject: false })
+        .then(chord => {
+          $scope.newChord = chord;
+        })
+        .catch(error => console.error(error));
       };
       $scope.getChordById();
 
       $scope.searchBy = 'artist';
       $scope.searchChord = function(searchBy, searchText) {
-        chords.searchChordsBy(searchBy,searchText)
+        chords.searchChordsBy(searchBy, searchText)
         .then(function(data) {
-          $scope.resultJson = data; 
+          $scope.resultJson = data;
         })
         .catch(function(data) {
-          $scope.resultJson = data; 
+          $scope.resultJson = data;
         });
       };
 
@@ -87,8 +86,8 @@
         });
       };
 
-      $scope.loginEmail = function(email,password) {
-        login.loginEmail(email,password)
+      $scope.loginEmail = (email, password) => {
+        login.loginEmail(email, password)
         .then(function(data){
           console.log(data);
         })
@@ -100,7 +99,7 @@
       setTimeout(function() {
 
         var chords = angular.element(document.querySelector('.transposeArea .chord'));
-        
+
         angular.forEach(chords, function(value){
           var oldText = angular.element(value).text();
           console.log(oldText);
@@ -127,7 +126,22 @@
         });
       };
 
-    
+      $scope.getTopChords = () => {
+        chords.getTopChords(2)
+        .then((data) => console.log('top chords: ', data));
+      };
+
+      $scope.addWeeklyChart = () => {
+        WeeklyChart.createWeeklyChart(mockData.getMockWeeklyChart());
+      };
+
+      $scope.getLatestChart = () => {
+        WeeklyChart.getLatestChart()
+        .then(data => {
+          $scope.latestWeeklyChart = data;
+        });
+      };
     }]);
-  
+
+
 })();

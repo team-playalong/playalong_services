@@ -11,7 +11,7 @@
             this.localStorageService.set(itemKey, itemValue);
         };
         return PlyStorage;
-    })();
+    }());
     angular.module('playalong.services')
         .service('PlyStorage', PlyStorage);
 })();
