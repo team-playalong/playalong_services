@@ -13,12 +13,13 @@
         // Do not use in new projects.
         $sceProvider.enabled(false);
     })
-        .controller('MainCtrl', ['$scope', 'config', '$http', 'chords', 'login', 'user', 'transposer',
-        function ($scope, config, $http, chords, login, user, transposer) {
+        .controller('MainCtrl', ['$scope', 'config', '$http', 'chords', 'login', 'user', 'transposer', 'WeeklyChart',
+        function ($scope, config, $http, chords, login, user, transposer, WeeklyChart) {
             $scope.login = login;
             $scope.transposer = transposer;
             $scope.chordRef = null;
             $scope.test = 'ltr';
+            $scope.WeeklyChart = WeeklyChart;
             $scope.addChord = function () {
                 $http.get(config.paths.mocks.hebrewChord)
                     .success(function (response) {
@@ -26,7 +27,7 @@
                         .then(function (chord) {
                         $scope.chordRef = chord;
                         //We now have a reference to the entire object
-                        $scope.chordRef.$bindTo($scope, "newChord").then(function () {
+                        $scope.chordRef.$bindTo($scope, 'newChord').then(function () {
                             console.log('binded!');
                         });
                     });
@@ -54,10 +55,11 @@
                 });
             };
             $scope.getChordById = function () {
-                var result = chords.getChordById('-JyRhFHl-hNKfoYakcvb');
-                if (result) {
-                    result.$bindTo($scope, "newChord");
-                }
+                chords.getChordById({ chordId: '-JxLKLUR8irZN0TA__XK', isFirebaseObject: false })
+                    .then(function (chord) {
+                    $scope.newChord = chord;
+                })
+                    .catch(function (error) { return console.error(error); });
             };
             $scope.getChordById();
             $scope.searchBy = 'artist';
@@ -108,6 +110,19 @@
                 })
                     .catch(function (data) {
                     console.warn(data.message);
+                });
+            };
+            $scope.getTopChords = function () {
+                chords.getTopChords(2)
+                    .then(function (data) { return console.log('top chords: ', data); });
+            };
+            $scope.addWeeklyChart = function () {
+                WeeklyChart.createWeeklyChart(mockData.getMockWeeklyChart());
+            };
+            $scope.getLatestChart = function () {
+                WeeklyChart.getLatestChart()
+                    .then(function (data) {
+                    $scope.latestWeeklyChart = data;
                 });
             };
         }]);

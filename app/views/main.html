@@ -1,12 +1,12 @@
 <div class="container">
   <div class="form-group">
-    <button class="btn btn-md" ng-click="addChord()">Add Chord</button>  
+    <button class="btn btn-md" ng-click="addChord()">Add Chord</button>
   </div>
   <h3 translate="home.SEARCH_TITLE"></h3>
-  <!-- <pre>{{newChord | json}}</pre>   -->
+  <pre>{{newChord | json}}</pre>
   <div class="form-group">
     <div class="transposeArea" ng-bind-html="newChord.content"></div>
-    <button class="btn" ng-click="transposeTheText();">Transpose Text</button>  
+    <button class="btn" ng-click="transposeTheText();">Transpose Text</button>
   </div>
   <textarea ng-model="newChord.artist" auto-direction auto-direction-scope-var="test"></textarea>
   <div class="form-group">
@@ -29,7 +29,7 @@
   <div class="form-group">
     <label for="searchText">Text</label>
     <input class="form-control" type="text" ng-model="searchText" />
-  </div>  
+  </div>
 
   <button class="form-control btn btn-primary" ng-click="searchChord(searchBy,searchText)" >Search Chord</button>
   <div class="container">
@@ -52,24 +52,24 @@
       <input class="form-control" ng-model="email" type="email" placeholder="email..." />
     <div class="control-label">Password</div>
     <input  class="form-control" ng-model="password" type="password" placeholder="password..." />
-  
-    
+
+
   </div>
   <button class="btn btn-primary pull-right" ng-click="loginEmail(email,password)">Login</button>
   <button class="btn btn-primary pull-right" ng-click="login.createUser(email,password)">Sign Up</button>
   <button class="btn btn-primary pull-right" ng-click="login.resetPassword(email)">Reset Password</button>
-  
+
   <br/><br/>
   <div class="form-group">
     <div class="control-label">Add to Favorites</div>
     <p>Check the checkbox if you want to add, otherwise it's remove</p>
     <div class="form-control">
       <input type="checkbox" ng-model="isAddFlag" />
-      
+
     </div>
     <div class="btn btn-primary" ng-click="addToFavorites()">Favorite Test</div>
   </div>
-  
+
 
   <div class="form-group">
     <div class="btn btn-default" ng-click="getFavorites()">Get Favorites</div>
@@ -88,7 +88,26 @@
     <div class="control-label">Rate Chord</div>
     <button class="btn btn-primary" ng-click="rateChord()">Click to rate</button>
   </div>
+
+  <br/><br/>
+  <div class="form-group">
+    <div class="control-label">Add weekly chart</div>
+    <button class="btn btn-primary" ng-click="addWeeklyChart()">Click to add dummy data</button>
+  </div>
   <br><br>
-  
-  
+
+  <div class="form-group">
+    <div class="control-label">Get latest weekly chart</div>
+    <button class="btn btn-primary" ng-click="getLatestChart()">Go</button>
+
+    <pre>
+      {{latestWeeklyChart | json}}
+    </pre>
+  </div>
+  <br><br>
+
+  <div ng-if="login.isSuperUser()">
+    Only superusers can see this!
+  </div>
+
 </div>
